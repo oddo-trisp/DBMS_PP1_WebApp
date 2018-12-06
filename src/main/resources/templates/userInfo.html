@@ -15,6 +15,10 @@
 <br/><br/>
 
 <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
+<<form th:action="@{/testProc1}" th:method="GET" >
+    <output th:type="text" name="response" th:value="hello"/>
+    <button type="submit" id="submitButton"> Submit </button>
+</form>
 
 </body>
 
