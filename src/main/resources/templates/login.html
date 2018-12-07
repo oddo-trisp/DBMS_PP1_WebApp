@@ -4,12 +4,10 @@
 <th:block th:include="/header"></th:block>
 
 <body class="hold-transition login-page">
-    <!-- Include _menu.html -->
-    <th:block th:include="/_menu"></th:block>
 
     <div class="login-box">
         <div class="login-logo">
-            <h1><b>KatiSAN</b> WebApp</h1>
+            <h1><b>DBMS PP1</b> WebApp</h1>
         </div>
         <div class="login-box-body">
             <!-- /login?error=true -->
@@ -22,9 +20,7 @@
             </div>
             <div th:if="${#request.getParameter('logoutSuccess') == 'true'}" class="text-light-blue text-center">Successfully Logged Out</div>
 
-            <p>
-                <h3 class="login-box-msg">Sign In</h3>
-            </p>
+            <h4 class="login-box-msg">Sign In</h4>
 
             <form name="login-form" th:action="@{/j_spring_security_check}" method="POST">
                 <div class="form-group has-feedback">

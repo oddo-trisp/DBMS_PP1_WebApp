@@ -2,17 +2,54 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="/header"></th:block>
-    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
-
+    <link href="../static/css/style.css" th:href="@{/css/welcome.css}" rel="stylesheet" />
     <title th:utext="${title}"></title>
 </head>
 
 <body>
 
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
 <div class="container">
-    <!-- Include _menu.html -->
-    <th:block th:include="/_menu"></th:block>
-    <h2>Message : <span th:utext="${message}"></span></h2>
+
+    <div class="row">
+        <h3>
+            In this page, we will test some of the Stored Procedures we have developed for our project.
+        </h3>
+        <div class="col-md-4">
+            <h4 class="proc_name">Stored Procedure 1</h4>
+            <p class="description">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam architecto dolor dolorem doloribus ducimus ea explicabo id illum, iste maiores, modi nisi placeat quas quis ratione repellendus, suscipit tempora tempore.
+            </p>
+            <form th:action="@{/testProc1}" th:method="GET" >
+                <output th:type="text" name="response" th:value="hello"/>
+                <button type="submit" id="submitButton"> Test SP1 </button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <h4 class="proc_name">Stored Procedure 2</h4>
+            <p class="description">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam architecto dolor dolorem doloribus ducimus ea explicabo id illum, iste maiores, modi nisi placeat quas quis ratione repellendus, suscipit tempora tempore.
+            </p>
+            <form th:action="@{/testProc1}" th:method="GET" >
+                <output th:type="text" name="response" th:value="hello"/>
+                <button type="submit" id="submitButton2"> Test SP2 </button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <h4 class="proc_name">Stored Procedure 3</h4>
+            <p class="description">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam architecto dolor dolorem doloribus ducimus ea explicabo id illum, iste maiores, modi nisi placeat quas quis ratione repellendus, suscipit tempora tempore.
+            </p>
+            <form th:action="@{/testProc1}" th:method="GET" >
+                <output th:type="text" name="response" th:value="hello"/>
+                <button type="submit" id="submitButton3"> Test SP3 </button>
+            </form>
+        </div>
+    </div>
+
+
 </div>
 
 

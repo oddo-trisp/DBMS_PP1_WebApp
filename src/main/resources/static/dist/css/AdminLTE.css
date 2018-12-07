@@ -350,7 +350,7 @@ a:focus {
     top: 0;
     right: 0;
     float: none;
-    background: #d2d6de;
+    background: #ffffdd;
     padding-left: 10px;
   }
   .content-header > .breadcrumb li:before {
@@ -3246,7 +3246,7 @@ table.text-center th {
 }
 .login-page,
 .register-page {
-  background: #d2d6de;
+  background: #e8e8e8;
 }
 .login-box,
 .register-box {
@@ -3265,11 +3265,11 @@ table.text-center th {
   background: #fff;
   padding: 20px;
   border-top: 0;
-  color: #666;
+  color: #555;
 }
 .login-box-body .form-control-feedback,
 .register-box-body .form-control-feedback {
-  color: #777;
+  color: #666;
 }
 .login-box-msg,
 .register-box-msg {

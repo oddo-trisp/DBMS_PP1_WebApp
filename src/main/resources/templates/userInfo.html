@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="/header"></th:block>
-    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
     <title>User Info</title>
 </head>
 <body>
 
+<th:block th:include="/_menu"></th:block>
+
 <div class="container">
     <!-- Include _menu.html -->
-    <th:block th:include="/_menu"></th:block>
     <h2>User Info Page</h2>
     <h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
     <b>This is protected page!</b>

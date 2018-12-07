@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="/header"></th:block>
+    <link href="../static/css/style.css" th:href="@{/css/insert.css}" rel="stylesheet" />
+    <title th:utext="${title}"></title>
+</head>
+
+<body>
+
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<div class="container">
+
+<div class="row">
+    <h3>Insert a Service Request to the Database</h3>
+    <form>
+        <div class="form-group">
+            <input type="text" name="reqno" class="form-control" placeholder="Service Request Number">
+        </div>
+        <div class="form-group">
+            <input type="text" name="reqtype" class="form-control" placeholder="Request Type">
+        </div>
+        <div class="form-group">
+            <input type="text" name="reqstatus" class="form-control" placeholder="Status">
+        </div>
+        <div class="form-group">
+            <input type="text" name="most_rec_action" class="form-control" placeholder="Most Recent Action">
+        </div>
+        <div class="form-group">
+            <input type="text" name="current_act" class="form-control" placeholder="Current Activity">
+        </div>
+        <div class="form-group">
+            <input type="text" name="create_date" class="form-control" placeholder="Create Date">
+        </div>
+        <div class="form-group">
+            <input type="text" name="completion_date" class="form-control" placeholder="Completion Date">
+        </div>
+        <div class="form-group">
+            <input type="number" step="any" name="lat" class="form-control" placeholder="Latitude">
+        </div>
+        <div class="form-group">
+            <input type="number" step="any" name="long" class="form-control" placeholder="Longitude">
+        </div>
+        <div class="row">
+            <input name="submit" type="submit" value="Insert" class="btn btn-primary btn-block btn-flat"/>
+        </div>
+    </form>
+</div>
+
+</div>
+
+
+</body>
+</html>
