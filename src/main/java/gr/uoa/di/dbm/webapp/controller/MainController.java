@@ -1,5 +1,6 @@
 package gr.uoa.di.dbm.webapp.controller;
 
+import gr.uoa.di.dbm.webapp.entity.AppUser;
 import gr.uoa.di.dbm.webapp.service.UserDetailsServiceImpl;
 import gr.uoa.di.dbm.webapp.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,12 @@ import java.util.stream.Collectors;
 @Controller
 public class MainController {
 
+    private final UserDetailsServiceImpl userDetailsService;
+
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    public MainController(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model) {
@@ -61,9 +66,8 @@ public class MainController {
                 .filter(e -> Arrays.asList("username", "password").contains(e.getKey()))
                 .filter(e -> !ArrayUtils.isEmpty(e.getValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, e->e.getValue()[0]));
-        UserDetails user = userDetailsService.loadUserByUsername(credentials.get("username"));
 
-        return user != null ? "register"
+        return userDetailsService.checkIfUserExists(credentials.get("username")) ? "register"
                 : userDetailsService.registerUser(credentials) != null
                 ? "login" : "register";
     }
@@ -103,15 +107,11 @@ public class MainController {
         return "error403";
     }
 
-//    @ResponseBody
-//    @RequestMapping(value = "/register/checkUsername")
-//    public AjaxResponseBody getSearchResultViaAjax(@RequestBody SearchCriteria search) {
-//
-//        AjaxResponseBody result = new AjaxResponseBody();
-//        //logic
-//        return result;
-//
-//    }
+    @RequestMapping(value="/testProc1", method = RequestMethod.GET)
+    @ResponseBody
+    public String testProc1() {
+        return userDetailsService.testProc1();
+    }
 }
 
 

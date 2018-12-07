@@ -12,7 +12,8 @@ import java.util.List;
  */
 @Entity
 @Table(name="app_user")
-@NamedQuery(name="AppUser.findAll", query="SELECT a FROM AppUser a")
+@NamedQuery(name="AppUser.findByUsername", query="SELECT a FROM AppUser a WHERE a.userName =: userName")
+
 public class AppUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 

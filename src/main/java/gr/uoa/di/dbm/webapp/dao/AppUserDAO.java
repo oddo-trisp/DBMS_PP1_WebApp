@@ -1,25 +1,31 @@
 package gr.uoa.di.dbm.webapp.dao;
 
 import gr.uoa.di.dbm.webapp.entity.AppUser;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 @Repository
 @Transactional
-public class AppUserDAO extends AbstractDAO<AppUser> {
+public class AppUserDAO extends GenericDAO<AppUser> {
 
-    public AppUser findUserAccount(String userName) {
+    public AppUser getUserProfile(String userName) {
         try {
-            String sql = "Select e from " + AppUser.class.getName() + " e " //
-                    + " Where e.userName = :userName ";
+            AppUser appUser = findByUsername(userName);
+            Hibernate.initialize(appUser.getUserRoles());   //Init lazy collection
+            return appUser;
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
-            Query query = entityManager.createQuery(sql, AppUser.class);
-            query.setParameter("userName", userName);
-
-            return (AppUser) query.getSingleResult();
+    public AppUser findByUsername(String userName) {
+        try {
+            return (AppUser) entityManager.createNamedQuery("AppUser.findByUsername")
+                    .setParameter("userName", userName)
+                    .getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
