@@ -103,15 +103,15 @@ public class MainController {
         return "error403";
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/register/checkUsername")
-    public AjaxResponseBody getSearchResultViaAjax(@RequestBody SearchCriteria search) {
-
-        AjaxResponseBody result = new AjaxResponseBody();
-        //logic
-        return result;
-
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/register/checkUsername")
+//    public AjaxResponseBody getSearchResultViaAjax(@RequestBody SearchCriteria search) {
+//
+//        AjaxResponseBody result = new AjaxResponseBody();
+//        //logic
+//        return result;
+//
+//    }
 }
 
 

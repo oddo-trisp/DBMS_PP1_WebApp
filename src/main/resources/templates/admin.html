@@ -1,21 +1,27 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <th:block th:include="/header"></th:block>
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+
     <title th:utext="${title}"></title>
 </head>
 <body>
-<!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
 
-<h2>Admin Page</h2>
-<h3>Welcome :
-    <span th:utext="${#request.userPrincipal.name}"></span>
-</h3>
-<b>This is protected page!</b>
+<div class="container">
+    <!-- Include _menu.html -->
+    <th:block th:include="/_menu"></th:block>
 
-<br/><br/>
+    <h2>Admin Page</h2>
+    <h3>Welcome :
+        <span th:utext="${#request.userPrincipal.name}"></span>
+    </h3>
+    <b>This is protected page!</b>
 
-<div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
+    <br/><br/>
+
+    <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
+</div>
 
 </body>
 

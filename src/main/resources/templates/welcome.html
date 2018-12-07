@@ -1,15 +1,20 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <th:block th:include="/header"></th:block>
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+
     <title th:utext="${title}"></title>
 </head>
 
 <body>
 
-<!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+<div class="container">
+    <!-- Include _menu.html -->
+    <th:block th:include="/_menu"></th:block>
+    <h2>Message : <span th:utext="${message}"></span></h2>
+</div>
 
-<h2>Message : <span th:utext="${message}"></span></h2>
 
 </body>
 </html>
