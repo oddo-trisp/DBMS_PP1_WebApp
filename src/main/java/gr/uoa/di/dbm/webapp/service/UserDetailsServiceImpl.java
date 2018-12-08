@@ -102,9 +102,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
     }
 
-    public String testProc1(){
-        List result = serviceRequestDAO.callProcedure1();
-        return result.toString();
+    public List testProc1(String sdate, String edate){
+        List result = serviceRequestDAO.callProcedure1(sdate,edate);
+        return result;
     }
 
+    public List testProc2(String sdate, String edate, String reqtype){
+        List result = serviceRequestDAO.callProcedure2(sdate,edate,reqtype);
+        return result;
+    }
+
+    public List testProc3(String sdate){
+        List result = serviceRequestDAO.callProcedure3(sdate);
+        return result;
+    }
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="/header"></th:block>
-    <link href="../static/css/style.css" th:href="@{/css/welcome.css}" rel="stylesheet" />
+    <link href="../static/css/welcome.css" th:href="@{/css/welcome.css}" rel="stylesheet" />
     <title th:utext="${title}"></title>
 </head>
 
@@ -20,30 +20,37 @@
         <div class="col-md-4">
             <h4 class="proc_name">Stored Procedure 1</h4>
             <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam architecto dolor dolorem doloribus ducimus ea explicabo id illum, iste maiores, modi nisi placeat quas quis ratione repellendus, suscipit tempora tempore.
+                Find the total requests per type that were created within a specified time range and sort them in a descending order.
             </p>
             <form th:action="@{/testProc1}" th:method="GET" >
-                <output th:type="text" name="response" th:value="hello"/>
+                <!--<output th:type="text" name="response" th:value="hello"/>-->
+                <!--<input type="date" name="sdate" class="form-control" placeholder="Start Date">-->
+                <input placeholder="Start Date" class="form-control" type="text" onfocus="(this.type = 'date')" name="sdate">
+                <input placeholder="End Date" class="form-control" type="text" onfocus="(this.type = 'date')" name="edate">
                 <button type="submit" id="submitButton"> Test SP1 </button>
             </form>
         </div>
         <div class="col-md-4">
             <h4 class="proc_name">Stored Procedure 2</h4>
             <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam architecto dolor dolorem doloribus ducimus ea explicabo id illum, iste maiores, modi nisi placeat quas quis ratione repellendus, suscipit tempora tempore.
+                Find the total requests per day for a specific request type and time range.
             </p>
-            <form th:action="@{/testProc1}" th:method="GET" >
-                <output th:type="text" name="response" th:value="hello"/>
+            <form th:action="@{/testProc2}" th:method="GET" >
+                <!--<output th:type="text" name="response" th:value="hello"/>-->
+                <input placeholder="Start Date" class="form-control" type="text" onfocus="(this.type = 'date')" name="sdate">
+                <input placeholder="End Date" class="form-control" type="text" onfocus="(this.type = 'date')" name="edate">
+                <input type="text" name="reqtype" class="form-control" placeholder="Request Type">
                 <button type="submit" id="submitButton2"> Test SP2 </button>
             </form>
         </div>
         <div class="col-md-4">
             <h4 class="proc_name">Stored Procedure 3</h4>
             <p class="description">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam architecto dolor dolorem doloribus ducimus ea explicabo id illum, iste maiores, modi nisi placeat quas quis ratione repellendus, suscipit tempora tempore.
+                Find the most common service request per zipcode for a specific day.
             </p>
-            <form th:action="@{/testProc1}" th:method="GET" >
-                <output th:type="text" name="response" th:value="hello"/>
+            <form th:action="@{/testProc3}" th:method="GET" >
+                <!--<output th:type="text" name="response" th:value="hello"/>-->
+                <input placeholder="Date" class="form-control" type="text" onfocus="(this.type = 'date')" name="sdate">
                 <button type="submit" id="submitButton3"> Test SP3 </button>
             </form>
         </div>
@@ -52,6 +59,6 @@
 
 </div>
 
-
 </body>
+
 </html>

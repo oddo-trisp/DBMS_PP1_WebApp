@@ -18,6 +18,16 @@ import java.util.Map;
 		@StoredProcedureParameter(mode = ParameterMode.IN, name = "endDate", type = Timestamp.class)
 })
 
+@NamedStoredProcedureQuery(name = "ServiceRequest.procedure2", procedureName = "procedure2", parameters = {
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "startDate", type = Timestamp.class),
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "endDate", type = Timestamp.class),
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "reqType", type = String.class)
+})
+
+@NamedStoredProcedureQuery(name = "ServiceRequest.procedure3", procedureName = "procedure3", parameters = {
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "startDate", type = Timestamp.class)
+})
+
 public class ServiceRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 

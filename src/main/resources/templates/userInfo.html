@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="/header"></th:block>
+    <link href="../static/css/userinfo.css" th:href="@{/css/userinfo.css}" rel="stylesheet" />
     <title>User Info</title>
 </head>
 <body>
@@ -9,12 +10,11 @@
 <th:block th:include="/_menu"></th:block>
 
 <div class="container">
-    <!-- Include _menu.html -->
-    <h2>User Info Page</h2>
-    <h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
-    <b>This is protected page!</b>
-    <br/><br/>
-    <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
+    <div class="row">
+        <h3>Welcome : <span id="user_name" th:utext="${#request.userPrincipal.name}"></span></h3>
+        <img id="user_img" src="http://placehold.it/125x125" />
+        <div id="user_info" th:if="${userInfo != null}" th:utext="${userInfo}"></div>
+    </div>
 </div>
 
 </body>
