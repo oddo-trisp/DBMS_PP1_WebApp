@@ -15,34 +15,37 @@
 
 <div class="row">
     <h3>Insert a Service Request to the Database</h3>
-    <form>
-        <div class="form-group">
+    <form action="#" th:action="@{/insert/addRequest}" method="post" th:object="${serviceRequest}">
+        <!--<div class="form-group">
             <input type="text" name="reqno" class="form-control" placeholder="Service Request Number">
+        </div>-->
+        <div class="form-group">
+            <input type="text" name="reqtype" th:field="*{requestType}" class="form-control" placeholder="Request Type">
         </div>
         <div class="form-group">
-            <input type="text" name="reqtype" class="form-control" placeholder="Request Type">
+            <input type="text" name="reqstatus" th:field="*{status}" class="form-control" placeholder="Status">
         </div>
         <div class="form-group">
-            <input type="text" name="reqstatus" class="form-control" placeholder="Status">
+            <input type="text" name="most_rec_action" th:field="*{mostRecentAction}" class="form-control" placeholder="Most Recent Action">
         </div>
         <div class="form-group">
-            <input type="text" name="most_rec_action" class="form-control" placeholder="Most Recent Action">
+            <input type="text" name="current_act" th:field="*{currentActivity}" class="form-control" placeholder="Current Activity">
         </div>
         <div class="form-group">
-            <input type="text" name="current_act" class="form-control" placeholder="Current Activity">
+            <input type="number" name="carts_delivered" class="form-control" placeholder="Carts Delivered">
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
             <input type="text" name="create_date" class="form-control" placeholder="Create Date">
-        </div>
-        <div class="form-group">
+        </div>-->
+        <!--<div class="form-group">
             <input type="text" name="completion_date" class="form-control" placeholder="Completion Date">
-        </div>
-        <div class="form-group">
+        </div>-->
+        <!--<div class="form-group">
             <input type="number" step="any" name="lat" class="form-control" placeholder="Latitude">
-        </div>
-        <div class="form-group">
+        </div>-->
+        <!--<div class="form-group">
             <input type="number" step="any" name="long" class="form-control" placeholder="Longitude">
-        </div>
+        </div>-->
         <div class="row">
             <input name="submit" type="submit" value="Insert" class="btn btn-primary btn-block btn-flat"/>
         </div>

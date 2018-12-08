@@ -32,6 +32,10 @@ public class GenericDAO<T extends Serializable> implements IGenericDAO<T> {
         return entityManager.find(entityClass, id);
     }
 
+    public T findById(Object id){
+        return entityManager.find(entityClass, id);
+    }
+
     public List findAll(){
 
         return entityManager.createQuery("from " + entityClass.getName())

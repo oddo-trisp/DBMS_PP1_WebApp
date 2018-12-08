@@ -18,6 +18,12 @@ public class LocationPK implements Serializable {
 
 	public LocationPK() {
 	}
+
+	public LocationPK(Double lat, Double lon){
+		this.latitude = lat;
+		this.longitude = lon;
+	}
+
 	public Double getLatitude() {
 		return this.latitude;
 	}

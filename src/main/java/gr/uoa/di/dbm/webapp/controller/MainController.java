@@ -1,14 +1,16 @@
 package gr.uoa.di.dbm.webapp.controller;
 
-import gr.uoa.di.dbm.webapp.entity.AppUser;
+import gr.uoa.di.dbm.webapp.entity.ServiceRequest;
 import gr.uoa.di.dbm.webapp.service.UserDetailsServiceImpl;
 import gr.uoa.di.dbm.webapp.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.ArrayUtils;
 
@@ -61,6 +63,7 @@ public class MainController {
                 .filter(e -> Arrays.asList("username", "password").contains(e.getKey()))
                 .filter(e -> !ArrayUtils.isEmpty(e.getValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, e->e.getValue()[0]));
+
         return userDetailsService.checkIfUserExists(credentials.get("username")) ? "register"
                 : userDetailsService.registerUser(credentials) != null
                 ? "login" : "register";
@@ -112,6 +115,8 @@ public class MainController {
 
     @RequestMapping(value = "/insert", method = RequestMethod.GET)
     public String insertPage(Model model) {
+        ServiceRequest serviceRequest = new ServiceRequest();
+        model.addAttribute("serviceRequest", serviceRequest);
         return "insert";
     }
 }
