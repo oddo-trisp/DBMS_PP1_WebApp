@@ -16,6 +16,7 @@ import org.thymeleaf.util.ArrayUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,17 @@ import java.util.stream.Collectors;
 public class MainController {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private static final String ADMIN = "admin";
+    private static final String ERROR403 = "error403";
+    private static final String INSERT = "insert";
+    private static final String LOGIN = "login";
+    private static final String MESSAGE = "message";
+    private static final String REGISTER = "register";
+    private static final String SERVICE_REQ = "serviceRequest";
+    private static final String TITLE = "title";
+    private static final String USER_INFO = "userInfo";
+    private static final String WELCOME = "welcome";
+
 
     @Autowired
     public MainController(UserDetailsServiceImpl userDetailsService) {
@@ -33,27 +45,27 @@ public class MainController {
 
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model) {
-        model.addAttribute("title", "Welcome");
-        model.addAttribute("message", "This is welcome page!");
-        return "welcome";
+        model.addAttribute(TITLE, "Welcome");
+        model.addAttribute(MESSAGE, "This is welcome page!");
+        return WELCOME;
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(Model model, Principal principal) {
         User loggedinUser = (User) ((Authentication) principal).getPrincipal();
         String userInfo = WebUtils.toString(loggedinUser);
-        model.addAttribute("userInfo", userInfo);
-        return "admin";
+        model.addAttribute(USER_INFO, userInfo);
+        return ADMIN;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model) {
-        return "login";
+        return LOGIN;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerPage(Model model) {
-        return "register";
+        return REGISTER;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
@@ -64,9 +76,9 @@ public class MainController {
                 .filter(e -> !ArrayUtils.isEmpty(e.getValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, e->e.getValue()[0]));
 
-        return userDetailsService.checkIfUserExists(credentials.get("username")) ? "register"
+        return userDetailsService.checkIfUserExists(credentials.get("username")) ? REGISTER
                 : userDetailsService.registerUser(credentials) != null
-                ? "login" : "register";
+                ? LOGIN : REGISTER;
     }
 
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
@@ -75,8 +87,8 @@ public class MainController {
         String userName = principal.getName();
         User loggedinUser = (User) ((Authentication) principal).getPrincipal();
         String userInfo = WebUtils.toString(loggedinUser);
-        model.addAttribute("userInfo", userInfo);
-        return "userInfo";
+        model.addAttribute(USER_INFO, userInfo);
+        return USER_INFO;
     }
 
     @RequestMapping(value = "/error403", method = RequestMethod.GET)
@@ -84,40 +96,36 @@ public class MainController {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             String userInfo = WebUtils.toString(loginedUser);
-            model.addAttribute("userInfo", userInfo);
+            model.addAttribute(USER_INFO, userInfo);
             String message = "Hi " + principal.getName() //
                     + "<br> You do not have permission to access this page!";
-            model.addAttribute("message", message);
+            model.addAttribute(MESSAGE, message);
         }
-        return "error403";
+        return ERROR403;
     }
 
-    @RequestMapping(value="/testProc1", method = RequestMethod.GET)
+    @RequestMapping(value={"/{procnum}", "/welcome/{procnum}"}, method = RequestMethod.GET)
     @ResponseBody
-    public List testProc1(@RequestParam("sdate")String sdate, @RequestParam("edate")String edate)
-    {
-        return userDetailsService.testProc1(sdate,edate);
-    }
-
-    @RequestMapping(value="/testProc2", method = RequestMethod.GET)
-    @ResponseBody
-    public List testProc2(@RequestParam("sdate")String sdate, @RequestParam("edate")String edate, @RequestParam("reqtype")String reqtype)
-    {
-        return userDetailsService.testProc2(sdate,edate,reqtype);
-    }
-
-    @RequestMapping(value="/testProc3", method = RequestMethod.GET)
-    @ResponseBody
-    public List testProc3(@RequestParam("sdate")String sdate)
-    {
-        return userDetailsService.testProc3(sdate);
+    public List testProc(Model model, @RequestParam("sdate")String sdate, @RequestParam(name="edate",required=false)String edate,
+                         @RequestParam(name="reqtype",required=false)String reqtype , @PathVariable String procnum) {
+        List L = new ArrayList();
+        if(procnum.equals("1")){
+            L = userDetailsService.testProc1(sdate,edate);
+        }
+        if(procnum.equals("2")){
+            L = userDetailsService.testProc2(sdate,edate,reqtype);
+        }
+        if(procnum.equals("3")){
+            L = userDetailsService.testProc3(sdate);
+        }
+        return L;
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.GET)
     public String insertPage(Model model) {
         ServiceRequest serviceRequest = new ServiceRequest();
-        model.addAttribute("serviceRequest", serviceRequest);
-        return "insert";
+        model.addAttribute(SERVICE_REQ, serviceRequest);
+        return INSERT;
     }
 }
 

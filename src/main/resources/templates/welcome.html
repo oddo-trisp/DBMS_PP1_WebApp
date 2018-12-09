@@ -22,7 +22,7 @@
             <p class="description">
                 Find the total requests per type that were created within a specified time range and sort them in a descending order.
             </p>
-            <form th:action="@{/testProc1}" th:method="GET" >
+            <form th:action="@{/welcome/1}" th:method="GET" >
                 <!--<output th:type="text" name="response" th:value="hello"/>-->
                 <!--<input type="date" name="sdate" class="form-control" placeholder="Start Date">-->
                 <input placeholder="Start Date" class="form-control" type="text" onfocus="(this.type = 'date')" name="sdate">
@@ -35,7 +35,7 @@
             <p class="description">
                 Find the total requests per day for a specific request type and time range.
             </p>
-            <form th:action="@{/testProc2}" th:method="GET" >
+            <form th:action="@{/welcome/2}" th:method="GET" >
                 <!--<output th:type="text" name="response" th:value="hello"/>-->
                 <input placeholder="Start Date" class="form-control" type="text" onfocus="(this.type = 'date')" name="sdate">
                 <input placeholder="End Date" class="form-control" type="text" onfocus="(this.type = 'date')" name="edate">
@@ -48,7 +48,7 @@
             <p class="description">
                 Find the most common service request per zipcode for a specific day.
             </p>
-            <form th:action="@{/testProc3}" th:method="GET" >
+            <form th:action="@{/welcome/3}" th:method="GET" >
                 <!--<output th:type="text" name="response" th:value="hello"/>-->
                 <input placeholder="Date" class="form-control" type="text" onfocus="(this.type = 'date')" name="sdate">
                 <button type="submit" id="submitButton3"> Test SP3 </button>
