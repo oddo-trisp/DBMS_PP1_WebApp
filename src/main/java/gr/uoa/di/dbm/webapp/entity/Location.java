@@ -18,6 +18,7 @@ public class Location implements Serializable {
 	@EmbeddedId
 	private LocationPK id;
 
+	@Column(name="address")
 	private String address;
 
 	@Column(name="community_area")

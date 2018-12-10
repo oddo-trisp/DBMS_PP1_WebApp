@@ -22,15 +22,23 @@ public class AppUser implements Serializable {
 	@Column(name="user_id")
 	private Long userId;
 
+	@Column(name = "enabled")
 	private Integer enabled;
 
 	@Column(name="encryted_password")
 	private String encrytedPassword;
 
+	@Transient
+	private  String password;
+
 	@Column(name="user_name")
 	private String userName;
 
-	@Column(name="")
+	@Column(name="address")
+	private String address;
+
+	@Column(name="email")
+	private String email;
 
 	//bi-directional many-to-one association to UserRole
 	@OneToMany(mappedBy="appUser", cascade=CascadeType.ALL)
@@ -63,12 +71,36 @@ public class AppUser implements Serializable {
 		this.encrytedPassword = encrytedPassword;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getUserName() {
 		return this.userName;
 	}
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public List<UserRole> getUserRoles() {

@@ -1,11 +1,13 @@
 package gr.uoa.di.dbm.webapp.service;
 
 import gr.uoa.di.dbm.webapp.dao.AppUserDAO;
-import gr.uoa.di.dbm.webapp.dao.GenericDAO;
 import gr.uoa.di.dbm.webapp.dao.IGenericDAO;
-import gr.uoa.di.dbm.webapp.dao.ServiceRequestDAO;
-import gr.uoa.di.dbm.webapp.entity.*;
+import gr.uoa.di.dbm.webapp.entity.AppRole;
+import gr.uoa.di.dbm.webapp.entity.AppUser;
+import gr.uoa.di.dbm.webapp.entity.Role;
+import gr.uoa.di.dbm.webapp.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,17 +27,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final IGenericDAO<AppRole> appRoleDAO;
 
-    private final ServiceRequestDAO serviceRequestDAO;
-
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserDetailsServiceImpl(AppUserDAO appUserDAO, GenericDAO<AppRole> appRoleDAO, ServiceRequestDAO serviceRequestDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserDetailsServiceImpl(AppUserDAO appUserDAO, @Qualifier("appRoleGenericDAO") IGenericDAO<AppRole> appRoleDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.appUserDAO = appUserDAO;
         this.appRoleDAO = appRoleDAO;
-        this.serviceRequestDAO = serviceRequestDAO;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        appRoleDAO.setEntityClass(AppRole.class);
     }
 
     @Override
@@ -78,13 +75,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return appUserDAO.findByUsername(username) != null;
     }
 
-    public AppUser registerUser(Map<String,String> credentials){
+    public AppUser registerUser(AppUser appUser){
+    //public AppUser registerUser(Map<String,String> credentials){
         try {
             UserRole userRole = new UserRole();
 
-            AppUser appUser = new AppUser();
-            appUser.setUserName(credentials.get("username"));
-            appUser.setEncrytedPassword(bCryptPasswordEncoder.encode(credentials.get("password")));
+            appUser.setEncrytedPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
             appUser.setEnabled(1);
             appUser.addUserRole(userRole);
 
@@ -100,20 +96,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public List testProc1(String sdate, String edate){
-        List result = serviceRequestDAO.callProcedure1(sdate,edate);
-        return result;
-    }
-
-    public List testProc2(String sdate, String edate, String reqtype){
-        List result = serviceRequestDAO.callProcedure2(sdate,edate,reqtype);
-        return result;
-    }
-
-    public List testProc3(String sdate){
-        List result = serviceRequestDAO.callProcedure3(sdate);
-        return result;
     }
 }

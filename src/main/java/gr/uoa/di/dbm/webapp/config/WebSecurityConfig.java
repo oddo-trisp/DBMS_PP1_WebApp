@@ -2,6 +2,9 @@ package gr.uoa.di.dbm.webapp.config;
 
 import javax.sql.DataSource;
 
+import gr.uoa.di.dbm.webapp.dao.GenericDAO;
+import gr.uoa.di.dbm.webapp.entity.AppRole;
+import gr.uoa.di.dbm.webapp.entity.Location;
 import gr.uoa.di.dbm.webapp.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +32,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public GenericDAO<AppRole> appRoleGenericDAO() {
+        GenericDAO<AppRole> appRoleGenericDAO = new GenericDAO<>();
+        appRoleGenericDAO.setEntityClass(AppRole.class);
+        return appRoleGenericDAO;
+    }
+
+    @Bean
+    public GenericDAO<Location> locationGenericDAO() {
+        GenericDAO<Location> locationGenericDAO = new GenericDAO<>();
+        locationGenericDAO.setEntityClass(Location.class);
+        return locationGenericDAO;
+    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -54,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')");
 
         //For USER only
-        http.authorizeRequests().antMatchers("/insert","/insert/addRequest").access("hasRole('ROLE_USER')");
+        //http.authorizeRequests().antMatchers("/insert","/insert/addRequest").access("hasRole('ROLE_USER')");
 
 
         // When the user has logged in as XX.

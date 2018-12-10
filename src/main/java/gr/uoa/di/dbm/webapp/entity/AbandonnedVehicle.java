@@ -14,7 +14,7 @@ public class AbandonnedVehicle extends ServiceRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="days_parked")
-	private double daysParked;
+	private Double daysParked;
 
 	@Column(name="license_plate")
 	private String licensePlate;
@@ -28,11 +28,11 @@ public class AbandonnedVehicle extends ServiceRequest implements Serializable {
 	public AbandonnedVehicle() {
 	}
 
-	public double getDaysParked() {
+	public Double getDaysParked() {
 		return this.daysParked;
 	}
 
-	public void setDaysParked(double daysParked) {
+	public void setDaysParked(Double daysParked) {
 		this.daysParked = daysParked;
 	}
 

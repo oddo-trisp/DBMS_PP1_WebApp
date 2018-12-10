@@ -16,6 +16,7 @@ public class GraffityRemoval extends ServiceRequest implements Serializable {
 	@Column(name="graffity_location")
 	private String graffityLocation;
 
+	@Column(name="surface")
 	private String surface;
 
 	public GraffityRemoval() {

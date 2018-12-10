@@ -9,50 +9,433 @@
 <body>
 
 <!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+    <th:block th:include="/_menu"></th:block>
 
-<div class="container">
+    <div class="container">
 
-<div class="row">
-    <h3>Insert a Service Request to the Database</h3>
-    <form action="#" th:action="@{/insert/addRequest}" method="post" th:object="${serviceRequest}">
-        <!--<div class="form-group">
-            <input type="text" name="reqno" class="form-control" placeholder="Service Request Number">
-        </div>-->
-        <div class="form-group">
-            <input type="text" name="reqtype" th:field="*{requestType}" class="form-control" placeholder="Request Type">
-        </div>
-        <div class="form-group">
-            <input type="text" name="reqstatus" th:field="*{status}" class="form-control" placeholder="Status">
-        </div>
-        <div class="form-group">
-            <input type="text" name="most_rec_action" th:field="*{mostRecentAction}" class="form-control" placeholder="Most Recent Action">
-        </div>
-        <div class="form-group">
-            <input type="text" name="current_act" th:field="*{currentActivity}" class="form-control" placeholder="Current Activity">
-        </div>
-        <div class="form-group">
-            <input type="number" name="carts_delivered" class="form-control" placeholder="Carts Delivered">
-        </div>
-        <!--<div class="form-group">
-            <input type="text" name="create_date" class="form-control" placeholder="Create Date">
-        </div>-->
-        <!--<div class="form-group">
-            <input type="text" name="completion_date" class="form-control" placeholder="Completion Date">
-        </div>-->
-        <!--<div class="form-group">
-            <input type="number" step="any" name="lat" class="form-control" placeholder="Latitude">
-        </div>-->
-        <!--<div class="form-group">
-            <input type="number" step="any" name="long" class="form-control" placeholder="Longitude">
-        </div>-->
         <div class="row">
-            <input name="submit" type="submit" value="Insert" class="btn btn-primary btn-block btn-flat"/>
-        </div>
-    </form>
-</div>
+        <h3>Insert a Service Request to the Database</h3>
+        <form action="#" th:action="@{/insert/addRequest}" method="post" th:object="${serviceRequest}" id="service_request_form">
+            <!--<div class="form-group">
+                <input type="text" name="reqno" class="form-control" placeholder="Service Request Number">
+            </div>-->
+            <div class="form-group">
+                <select th:field="*{requestType}" class="form-control" id="reqtype_menu">
+                    <option value="">Select Request Type</option>
+                    <option th:each="reqType : ${serviceRequestTypes}"
+                        th:value="${reqType}"
+                        th:text="${reqType}">
+                    </option>
+                </select>
+            </div>
 
-</div>
+            <div class="form-group">
+                <input type="text" name="reqtype" th:field="*{requestType}" class="form-control" placeholder="Request Type">
+            </div>
+            <div class="form-group">
+                <input type="text" name="reqstatus" th:field="*{status}" class="form-control" placeholder="Status">
+            </div>
+            <div class="form-group">
+                <input type="text" name="most_rec_action" th:field="*{mostRecentAction}" class="form-control" placeholder="Most Recent Action">
+            </div>
+            <div class="form-group">
+                <input type="text" name="current_act" th:field="*{currentActivity}" class="form-control" placeholder="Current Activity">
+            </div>
+
+            <!-- Abandonded Buildings -->
+            <div class="form-group hidden" id="abandoned_building">
+                <h4 class="message">Abandoned Building</h4>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input name="building_dangerous" type="checkbox"> Is Dangerous
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input name="building_fire" type="checkbox"> Fire
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input name="building_usage" type="checkbox"> In Usage
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="building_entrance" class="form-control" placeholder="Building Entrance">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="building_location_lot" class="form-control" placeholder="Building Location On The Lot">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="building_open" class="form-control" placeholder="Building Location Open">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="building_vacant" class="form-control" placeholder="Building Vacant">
+                </div>
+            </div>
+
+            <!-- Abandonded Vehicles -->
+            <div class="form-group hidden" id="abandoned_vehicles">
+                <h4 class="message">Abandoned Vehicles</h4>
+                <div class="form-group">
+                    <input type="number" name="days_parked" class="form-control" placeholder="Days Parked">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="license_plate" class="form-control" placeholder="Licence Plate">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="vehicle_color" class="form-control" placeholder="Vehicle Color">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="vehicle_model" class="form-control" placeholder="Vehicle Model">
+                </div>
+            </div>
+
+            <!-- Graffity Removal -->
+            <div class="form-group hidden" id="graffity_removal">
+                <h4 class="message">Graffity Removal</h4>
+                <div class="form-group">
+                    <input type="text" name="graffity_location" class="form-control" placeholder="Graffity Location">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="surface" class="form-control" placeholder="Graffity Surface">
+                </div>
+            </div>
+
+            <!-- Rodent Baiting -->
+            <div class="form-group hidden" id="rodent_baiting">
+                <h4 class="message">Rodent Baiting</h4>
+                <div class="form-group">
+                    <input type="number" name="baited_num" class="form-control" placeholder="Baited Number">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="garbage_num" class="form-control" placeholder="Garbage Number">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="rats_num" class="form-control" placeholder="Rats Number">
+                </div>
+            </div>
+
+            <div class="form-group hidden" id="rest_requests">
+                <h4 class="message">Rest Info</h4>
+
+                <!-- Garbage Cart -->
+                <div class="form-group hidden" id="carts_delivered">
+                    <input type="number" name="carts_delivered" class="form-control" placeholder="Carts Delivered">
+                </div>
+
+                <!-- Sanitation Code -->
+                <div class="form-group hidden" id="sanitation_code">
+                    <input type="number" name="carts_delivered" class="form-control" placeholder="SNatural Violation">
+                </div>
+
+                <!-- Pot Holes -->
+                <div class="form-group hidden" id="pot_holes">
+                    <input type="number" name="holes_number" class="form-control" placeholder="Holes Number">
+                </div>
+
+                <!-- Tree Debri -->
+                <div class="form-group hidden" id="tree_debri">
+                    <input type="text" name="debris_location" class="form-control" placeholder="Debris Location">
+                </div>
+
+                <!-- Trim Tree -->
+                <div class="form-group hidden" id="trim_tree">
+                    <input type="text" name="tree_location" class="form-control" placeholder="Tree Location">
+                </div>
+            </div>
+
+            <!--<div class="form-group">
+                <input type="text" name="create_date" class="form-control" placeholder="Create Date">
+            </div>-->
+            <!--<div class="form-group">
+                <input type="text" name="completion_date" class="form-control" placeholder="Completion Date">
+            </div>-->
+
+            <div class="form-group" id="location">
+                <div class="input-group form-group">
+                    <input type="text" id="address" name="address" th:required="required" th:field="*{location.address}" placeholder="Address (e.g. 221B BAKER STREET)" class="form-control">
+                    <span class="input-group-btn">
+                          <button type="button" id="address_search" class="btn btn-info btn-flat">Go!</button>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="number" name="community_area" th:field="*{location.communityArea}" class="form-control" placeholder="Community Area (e.g. 1)">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="police_district" th:field="*{location.policeDistrict}" class="form-control" placeholder="Police District (e.g. 24)">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="ward" th:field="*{location.ward}" class="form-control" placeholder="Ward (e.g. 49)">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="ssa" th:field="*{location.ssa}" class="form-control" placeholder="SSA (e.g. 50)">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="zip_code" th:required="required" th:field="*{location.zipCode}" id="zip_code" class="form-control" placeholder="ZIP Code (e.g. 60626)">
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <input type="number" step="any" name="lat" id="lat" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" step="any" name="long" id="long" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <input name="submit" type="submit" value="Insert" class="btn btn-primary btn-block btn-flat"/>
+            </div>
+        </form>
+    </div>
+
+        <div class="row">
+            <div id="map" style="width:100%;height:400px;"></div>
+        </div>
+
+    </div>
+
+    <script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+    <!-- iCheck -->
+    <script th:src="@{/plugins/iCheck/icheck.min.js}"></script>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="https://tiles.unwiredmaps.com/js/leaflet-unwired.js"></script>
+
+    <script>
+        $('#reqtype_menu').change(function() {
+            var selectedType = $('#reqtype_menu :selected').text();
+            var restRequest = $('#rest_requests');
+            var cartsDelivered = $('#carts_delivered');
+            var sanitationCode = $('#sanitation_code');
+            var potHoles = $('#pot_holes');
+            var treeDerbi = $('#tree_debri');
+            var trimTree = $('#trim_tree');
+
+            var rodentBating = $('#rodent_baiting');
+            var graffityRemoval = $('#graffity_removal');
+            var abandondedVehicles = $('#abandoned_vehicles');
+            var abandondedBuilding = $('#abandoned_building');
+
+            if(selectedType.includes('Garbage Cart')){
+                restRequest.removeClass('hidden');
+                cartsDelivered.removeClass('hidden');
+                sanitationCode.addClass('hidden');
+                potHoles.addClass('hidden');
+                treeDerbi.addClass('hidden');
+                trimTree.addClass('hidden');
+
+                rodentBating.addClass('hidden');
+                graffityRemoval.addClass('hidden');
+                abandondedVehicles.addClass('hidden');
+                abandondedBuilding.addClass('hidden');
+            }
+            else if(selectedType.includes('Sanitation')){
+                restRequest.removeClass('hidden');
+                cartsDelivered.addClass('hidden');
+                sanitationCode.removeClass('hidden');
+                potHoles.addClass('hidden');
+                treeDerbi.addClass('hidden');
+                trimTree.addClass('hidden');
+
+                rodentBating.addClass('hidden');
+                graffityRemoval.addClass('hidden');
+                abandondedVehicles.addClass('hidden');
+                abandondedBuilding.addClass('hidden');
+            }
+            else if(selectedType.includes('Pot Hol') || selectedType.includes('Pothole')){
+                restRequest.removeClass('hidden');
+                cartsDelivered.addClass('hidden');
+                sanitationCode.addClass('hidden');
+                potHoles.removeClass('hidden');
+                treeDerbi.addClass('hidden');
+                trimTree.addClass('hidden');
+
+                rodentBating.addClass('hidden');
+                graffityRemoval.addClass('hidden');
+                abandondedVehicles.addClass('hidden');
+                abandondedBuilding.addClass('hidden');
+            }
+            else if(selectedType.includes('Tree Debris')){
+                restRequest.removeClass('hidden');
+                cartsDelivered.addClass('hidden');
+                sanitationCode.addClass('hidden');
+                potHoles.addClass('hidden');
+                treeDerbi.removeClass('hidden');
+                trimTree.addClass('hidden');
+
+                rodentBating.addClass('hidden');
+                graffityRemoval.addClass('hidden');
+                abandondedVehicles.addClass('hidden');
+                abandondedBuilding.addClass('hidden');
+            }
+            else if(selectedType.includes('Tree Trim')){
+                restRequest.removeClass('hidden');
+                cartsDelivered.addClass('hidden');
+                sanitationCode.addClass('hidden');
+                potHoles.addClass('hidden');
+                treeDerbi.addClass('hidden');
+                trimTree.removeClass('hidden');
+
+                rodentBating.addClass('hidden');
+                graffityRemoval.addClass('hidden');
+                abandondedVehicles.addClass('hidden');
+                abandondedBuilding.addClass('hidden');
+            }
+            else if(selectedType.includes('Rodent Baiting')){
+                restRequest.addClass('hidden');
+                cartsDelivered.addClass('hidden');
+                sanitationCode.addClass('hidden');
+                potHoles.addClass('hidden');
+                treeDerbi.addClass('hidden');
+                trimTree.addClass('hidden');
+
+                rodentBating.removeClass('hidden');
+                graffityRemoval.addClass('hidden');
+                abandondedVehicles.addClass('hidden');
+                abandondedBuilding.addClass('hidden');
+            }
+            else if(selectedType.includes('Graffiti Removal')){
+                restRequest.addClass('hidden');
+                cartsDelivered.addClass('hidden');
+                sanitationCode.addClass('hidden');
+                potHoles.addClass('hidden');
+                treeDerbi.addClass('hidden');
+                trimTree.addClass('hidden');
+
+                rodentBating.addClass('hidden');
+                graffityRemoval.removeClass('hidden');
+                abandondedVehicles.addClass('hidden');
+                abandondedBuilding.addClass('hidden');
+            }
+            else if(selectedType.includes('Abandoned Vehicle')){
+                restRequest.addClass('hidden');
+                cartsDelivered.addClass('hidden');
+                sanitationCode.addClass('hidden');
+                potHoles.addClass('hidden');
+                treeDerbi.addClass('hidden');
+                trimTree.addClass('hidden');
+
+                rodentBating.addClass('hidden');
+                graffityRemoval.addClass('hidden');
+                abandondedVehicles.removeClass('hidden');
+                abandondedBuilding.addClass('hidden');
+            }
+            else if(selectedType.includes('Abandoned Building')){
+                restRequest.addClass('hidden');
+                cartsDelivered.addClass('hidden');
+                sanitationCode.addClass('hidden');
+                potHoles.addClass('hidden');
+                treeDerbi.addClass('hidden');
+                trimTree.addClass('hidden');
+
+                rodentBating.addClass('hidden');
+                graffityRemoval.addClass('hidden');
+                abandondedVehicles.addClass('hidden');
+                abandondedBuilding.removeClass('hidden');
+            }
+            else {
+                restRequest.addClass('hidden');
+                cartsDelivered.addClass('hidden');
+                sanitationCode.addClass('hidden');
+                potHoles.addClass('hidden');
+                treeDerbi.addClass('hidden');
+                trimTree.addClass('hidden');
+
+                rodentBating.addClass('hidden');
+                graffityRemoval.addClass('hidden');
+                abandondedVehicles.addClass('hidden');
+                abandondedBuilding.addClass('hidden');
+            }
+
+        });
+
+
+        $('#address_search').click(function() {
+
+            var form = $('#service_request_form');
+            form.validate();
+            if(!form.valid())
+                alert("Hello")
+
+            var address = $('#address').val();
+            var zipCode = $('#zip_code').val();
+
+            // API token goes here
+            var key = '0dc2b284f52976';
+
+            var url = new URL("https://us1.locationiq.com/v1/search.php");
+            url.searchParams.append('key', key);
+            url.searchParams.append('country', 'USA');
+            url.searchParams.append('county', 'Cook County');
+            url.searchParams.append('state', 'Illinois');
+            url.searchParams.append('city', 'Chicago');
+            url.searchParams.append('address', address);
+            url.searchParams.append('postalcode', zipCode);
+            url.searchParams.append('format', 'json');
+
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": url,
+                "method": "GET"
+            }
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+
+                // Add layers that we need to the map
+                var streets = L.tileLayer.Unwired({key: key, scheme: "streets"});
+
+                var json = response[0];
+                var lat = json['lat'];
+                var lon = json['lon'];
+
+                $('#long').val(lon);
+                $('#lat').val(lat);
+
+                console.log()
+                console.log(lat);
+                console.log(lon);
+
+                // Initialize the map
+                var map = L.map('map', {
+                    center: [lat,lon], //map loads with this location as center
+                    zoom: 14,
+                    layers: [streets] // Show 'streets' by default
+                });
+
+                // Add the 'scale' control
+                L.control.scale().addTo(map);
+
+                // Add the 'layers' control
+                L.control.layers({
+                    "Streets": streets
+                }).addTo(map);
+
+                var marker = L.marker([lat, lon]).addTo(map);
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
+
 
 
 </body>

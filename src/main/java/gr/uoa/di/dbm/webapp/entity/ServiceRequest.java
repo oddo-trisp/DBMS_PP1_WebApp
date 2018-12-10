@@ -28,6 +28,14 @@ import java.util.Map;
 		@StoredProcedureParameter(mode = ParameterMode.IN, name = "startDate", type = Timestamp.class)
 })
 
+@NamedQuery(name="ServiceRequest.findRequestTypes", query="SELECT DISTINCT r.requestType FROM ServiceRequest r WHERE r.requestType IS NOT NULL")
+
+@NamedQuery(name="ServiceRequest.findByZipcode", query="SELECT r FROM ServiceRequest r " +
+		"WHERE r.location.zipCode =: zipCode")
+
+@NamedQuery(name="ServiceRequest.findByAddress", query="SELECT r FROM ServiceRequest r " +
+		"WHERE r.location.address =: address")
+
 public class ServiceRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
