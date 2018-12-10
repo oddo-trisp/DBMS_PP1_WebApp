@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="/header"></th:block>
+    <link href="../static/css/spResults.css" th:href="@{/css/spResults.css}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+    <title th:utext="${title}"></title>
+</head>
+
+<body>
+
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<div class="container">
+    <div class="row">
+        <!--SP 1-->
+        <div class="sptbl" th:if="${fnum == 1}">
+            <h3>Stored Procedure 1 results:</h3>
+            <table id="sp1tbl" class="table table-striped">
+                <thead>
+                <tr>
+                    <th> SERVICE REQUEST TYPE </th>
+                    <th> TOTAL REQUESTS </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="rl : ${rList}">
+                    <td th:value="${rl[1]}" th:text="${rl[1]}"> </td>
+                    <td th:value="${rl[0]}" th:text="${rl[0]}"> </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- SP 2 -->
+        <div class="sptbl" th:if="${fnum == 2}">
+            <h3>Stored Procedure 2 results:</h3>
+            <table id="sp2tbl" class="table table-striped">
+                <thead>
+                <tr>
+                    <th> DAY </th>
+                    <th> REQUESTS </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="rl : ${rList}">
+                    <td th:value="${rl[0]}" th:text="${rl[0]}"> </td>
+                    <td th:value="${rl[1]}" th:text="${rl[1]}"> </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- SP 3 -->
+        <div class="sptbl" th:if="${fnum == 3}">
+            <h3>Stored Procedure 3 results:</h3>
+            <table id="sp3tbl" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th> ZIP CODE </th>
+                        <th> SERVICE REQUEST TYPE </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="rl : ${rList}">
+                        <td th:value="${rl[0]}" th:text="${rl[0]}"> </td>
+                        <td th:value="${rl[1]}" th:text="${rl[1]}"> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#sp1tbl').DataTable({
+            "bFilter" : false
+        });
+        $('#sp2tbl').DataTable({
+            "bFilter" : false
+        });
+        $('#sp3tbl').DataTable({
+            "bFilter" : false
+        });
+    } );
+</script>
+
+</body>
+
+</html>

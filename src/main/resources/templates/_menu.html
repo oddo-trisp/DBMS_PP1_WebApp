@@ -1,14 +1,13 @@
 <div xmlns:th="http://www.thymeleaf.org">
 
-    <nav class="navbar navbar-light bg-light" style="background-color: #ffffff;">
+    <nav class="navbar navbar-light bg-light" style="background-color: #efefef;">
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-left">
                 <li><a class="navbar-brand" th:href="@{/}">Home</a></li>
                 <li><a class="navbar-brand" th:href="@{/insert}">Insert</a></li>
-
+                <li><a class="navbar-brand" th:href="@{/search}">Search</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a class="navbar-brand" th:href="@{/userInfo}">User Info</a></li>
                 <li><a class="navbar-brand" th:href="@{/admin}">Admin</a></li>
                 <li><a class="navbar-brand" th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a></li>
             </ul>

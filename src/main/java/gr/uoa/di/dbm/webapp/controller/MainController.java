@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.util.ArrayUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +33,9 @@ public class MainController {
     private static final String LOGIN = "login";
     private static final String MESSAGE = "message";
     private static final String REGISTER = "register";
-    private static final String SERVICE_REQ = "serviceRequest";
+    private static final String SEARCH = "search";
+    private static final String SERVICE_REQUEST = "serviceRequest";
+    private static final String SP_RESULTS = "spResults";
     private static final String TITLE = "title";
     private static final String USER_INFO = "userInfo";
     private static final String WELCOME = "welcome";
@@ -45,9 +48,29 @@ public class MainController {
 
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model) {
-        model.addAttribute(TITLE, "Welcome");
-        model.addAttribute(MESSAGE, "This is welcome page!");
+        model.addAttribute(TITLE, "Home");
+        model.addAttribute("resultsList","");
         return WELCOME;
+    }
+
+    @RequestMapping(value="/search/{stype}", method = RequestMethod.POST)
+    public String search(Model model, @PathVariable String stype, RedirectAttributes ra){
+        String x = ""; /* Anti gia String x = ""; kane List L = new List() */
+        if(stype.equals("zip"))
+            x = "zip"; /* edw trexoume to query gia to zip code kai swzoume sthn L anti gia auto pou exw sto x*/
+        if(stype.equals("address"))
+            x = "address"; /* edw trexoume gia to address kai swzoume sthn L anti gia auto pou exw kanei sto x */
+        ra.addFlashAttribute("resultsList", x); // edw pername to L, allakse to x me to L. tipota allo
+        model.addAttribute(TITLE, "Search");
+        return "redirect:/search";
+    }
+
+    @RequestMapping(value="/search", method = RequestMethod.GET)
+    public String searchPage(Model model, @ModelAttribute("resultsList") final String resList){
+        /* edw allakse sthn panw grammh to 'final String resList' me 'final List resList' kai mhn allakseis tipota allo apla svise to comment */
+        model.addAttribute("rList", resList);
+        model.addAttribute(TITLE, "Search");
+        return SEARCH;
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -81,21 +104,11 @@ public class MainController {
                 ? LOGIN : REGISTER;
     }
 
-    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
-    public String userInfo(Model model, Principal principal) {
-        // After user login successfully.
-        String userName = principal.getName();
-        User loggedinUser = (User) ((Authentication) principal).getPrincipal();
-        String userInfo = WebUtils.toString(loggedinUser);
-        model.addAttribute(USER_INFO, userInfo);
-        return USER_INFO;
-    }
-
     @RequestMapping(value = "/error403", method = RequestMethod.GET)
     public String accessDenied(Model model, Principal principal) {
         if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            String userInfo = WebUtils.toString(loginedUser);
+            User loggedinUser = (User) ((Authentication) principal).getPrincipal();
+            String userInfo = WebUtils.toString(loggedinUser);
             model.addAttribute(USER_INFO, userInfo);
             String message = "Hi " + principal.getName() //
                     + "<br> You do not have permission to access this page!";
@@ -104,27 +117,42 @@ public class MainController {
         return ERROR403;
     }
 
-    @RequestMapping(value={"/{procnum}", "/welcome/{procnum}"}, method = RequestMethod.GET)
-    @ResponseBody
-    public List testProc(Model model, @RequestParam("sdate")String sdate, @RequestParam(name="edate",required=false)String edate,
-                         @RequestParam(name="reqtype",required=false)String reqtype , @PathVariable String procnum) {
+    @RequestMapping(value="/spResults/{procnum}", method = RequestMethod.POST)
+    public String storedProc(@RequestParam(name="sdate")String sdate, @RequestParam(name="edate", required=false)String edate,
+                             @RequestParam(name="reqtype",required=false)String reqtype, RedirectAttributes ra,
+                             @PathVariable String procnum) {
         List L = new ArrayList();
+        int x = 0;
         if(procnum.equals("1")){
             L = userDetailsService.testProc1(sdate,edate);
+            x = 1;
         }
         if(procnum.equals("2")){
             L = userDetailsService.testProc2(sdate,edate,reqtype);
+            x = 2;
         }
         if(procnum.equals("3")){
             L = userDetailsService.testProc3(sdate);
+            x = 3;
         }
-        return L;
+        ra.addFlashAttribute("func", x);
+        ra.addFlashAttribute("resultsList", L);
+        return "redirect:/spResults";
+    }
+
+    @RequestMapping(value={"/spResults"}, method = RequestMethod.GET)
+    public String testProc(Model model, @ModelAttribute("resultsList") final List resList,
+                           @ModelAttribute("func") final int p) {
+        model.addAttribute("rList", resList);
+        model.addAttribute("fnum", p);
+        model.addAttribute(TITLE,"SP Results");
+        return SP_RESULTS;
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.GET)
     public String insertPage(Model model) {
         ServiceRequest serviceRequest = new ServiceRequest();
-        model.addAttribute(SERVICE_REQ, serviceRequest);
+        model.addAttribute(SERVICE_REQUEST, serviceRequest);
         return INSERT;
     }
 }

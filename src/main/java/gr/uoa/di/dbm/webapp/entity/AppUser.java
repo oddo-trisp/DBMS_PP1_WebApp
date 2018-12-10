@@ -30,6 +30,8 @@ public class AppUser implements Serializable {
 	@Column(name="user_name")
 	private String userName;
 
+	@Column(name="")
+
 	//bi-directional many-to-one association to UserRole
 	@OneToMany(mappedBy="appUser", cascade=CascadeType.ALL)
 	private List<UserRole> userRoles = new ArrayList<>();

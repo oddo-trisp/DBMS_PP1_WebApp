@@ -1,0 +1,21 @@
+.row {
+    margin-top: 2em;
+    text-align: center;
+}
+
+h4{
+    color: #336699;
+}
+
+input{
+    width: 45%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    padding: 5px;
+    border-bottom: 2px solid rgba(53, 158, 134, .5);
+}
+
+button{
+    margin-top: 20px;
+}
