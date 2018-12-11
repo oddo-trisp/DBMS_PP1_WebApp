@@ -20,27 +20,44 @@
                 <input type="text" name="reqno" class="form-control" placeholder="Service Request Number">
             </div>-->
             <div class="form-group">
-                <select th:field="*{requestType}" class="form-control" id="reqtype_menu">
+                <select class="form-control" id="reqtype_menu" name="request_type">
                     <option value="">Select Request Type</option>
                     <option th:each="reqType : ${serviceRequestTypes}"
-                        th:value="${reqType}"
-                        th:text="${reqType}">
+                        th:value="${reqType.key}"
+                        th:text="${reqType.value}">
                     </option>
                 </select>
             </div>
 
             <div class="form-group">
-                <input type="text" name="reqtype" th:field="*{requestType}" class="form-control" placeholder="Request Type">
+                <select class="form-control" th:field="*{status}" name="req_status">
+                    <option value="">Select Request Status</option>
+                    <option th:each="reqStatus : ${serviceRequestStatuses}"
+                            th:value="${reqStatus}"
+                            th:text="${reqStatus}">
+                    </option>
+                </select>
             </div>
+
             <div class="form-group">
-                <input type="text" name="reqstatus" th:field="*{status}" class="form-control" placeholder="Status">
+                <select class="form-control" th:field="*{currentActivity}" name="current_act">
+                    <option value="">Select Current Activity</option>
+                    <option th:each="currentAct : ${serviceRequestCurrentActivities}"
+                            th:value="${currentAct}"
+                            th:text="${currentAct}">
+                    </option>
+                </select>
             </div>
+
+            <!--<div class="form-group">
+                <input type="text" name="reqstatus" th:field="*{status}" class="form-control" placeholder="Status">
+            </div>-->
             <div class="form-group">
                 <input type="text" name="most_rec_action" th:field="*{mostRecentAction}" class="form-control" placeholder="Most Recent Action">
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
                 <input type="text" name="current_act" th:field="*{currentActivity}" class="form-control" placeholder="Current Activity">
-            </div>
+            </div>-->
 
             <!-- Abandonded Buildings -->
             <div class="form-group hidden" id="abandoned_building">
@@ -134,7 +151,7 @@
 
                 <!-- Sanitation Code -->
                 <div class="form-group hidden" id="sanitation_code">
-                    <input type="number" name="carts_delivered" class="form-control" placeholder="SNatural Violation">
+                    <input type="number" name="nature_violation" class="form-control" placeholder="Natural Violation">
                 </div>
 
                 <!-- Pot Holes -->
@@ -161,6 +178,7 @@
             </div>-->
 
             <div class="form-group" id="location">
+                <h4 class="message">Location Info</h4>
                 <div class="input-group form-group">
                     <input type="text" id="address" name="address" th:required="required" th:field="*{location.address}" placeholder="Address (e.g. 221B BAKER STREET)" class="form-control">
                     <span class="input-group-btn">
@@ -185,10 +203,10 @@
 
                 <div class="form-group">
                     <div class="form-group">
-                        <input type="number" step="any" name="lat" id="lat" class="form-control">
+                        <input type="number" step="any" name="lat" th:field="*{location.id.latitude}" id="lat" class="form-control">
                     </div>
                     <div class="form-group">
-                        <input type="number" step="any" name="long" id="long" class="form-control">
+                        <input type="number" step="any" name="long" th:field="*{location.id.longitude}" id="long" class="form-control">
                     </div>
                 </div>
             </div>
@@ -216,7 +234,7 @@
 
     <script>
         $('#reqtype_menu').change(function() {
-            var selectedType = $('#reqtype_menu :selected').text();
+            var selectedType = $('#reqtype_menu :selected').val();
             var restRequest = $('#rest_requests');
             var cartsDelivered = $('#carts_delivered');
             var sanitationCode = $('#sanitation_code');
@@ -229,146 +247,148 @@
             var abandondedVehicles = $('#abandoned_vehicles');
             var abandondedBuilding = $('#abandoned_building');
 
-            if(selectedType.includes('Garbage Cart')){
-                restRequest.removeClass('hidden');
-                cartsDelivered.removeClass('hidden');
-                sanitationCode.addClass('hidden');
-                potHoles.addClass('hidden');
-                treeDerbi.addClass('hidden');
-                trimTree.addClass('hidden');
+            console.log(selectedType)
+            
+            switch (selectedType) {
+                case "0":
+                    restRequest.removeClass('hidden');
+                    cartsDelivered.removeClass('hidden');
+                    sanitationCode.addClass('hidden');
+                    potHoles.addClass('hidden');
+                    treeDerbi.addClass('hidden');
+                    trimTree.addClass('hidden');
 
-                rodentBating.addClass('hidden');
-                graffityRemoval.addClass('hidden');
-                abandondedVehicles.addClass('hidden');
-                abandondedBuilding.addClass('hidden');
+                    rodentBating.addClass('hidden');
+                    graffityRemoval.addClass('hidden');
+                    abandondedVehicles.addClass('hidden');
+                    abandondedBuilding.addClass('hidden');
+                    break;
+                case "1":
+                    restRequest.removeClass('hidden');
+                    cartsDelivered.addClass('hidden');
+                    sanitationCode.removeClass('hidden');
+                    potHoles.addClass('hidden');
+                    treeDerbi.addClass('hidden');
+                    trimTree.addClass('hidden');
+
+                    rodentBating.addClass('hidden');
+                    graffityRemoval.addClass('hidden');
+                    abandondedVehicles.addClass('hidden');
+                    abandondedBuilding.addClass('hidden');
+                    break;
+                case "2":
+                    restRequest.removeClass('hidden');
+                    cartsDelivered.addClass('hidden');
+                    sanitationCode.addClass('hidden');
+                    potHoles.removeClass('hidden');
+                    treeDerbi.addClass('hidden');
+                    trimTree.addClass('hidden');
+
+                    rodentBating.addClass('hidden');
+                    graffityRemoval.addClass('hidden');
+                    abandondedVehicles.addClass('hidden');
+                    abandondedBuilding.addClass('hidden');
+                    break;
+                case "3":
+                    restRequest.removeClass('hidden');
+                    cartsDelivered.addClass('hidden');
+                    sanitationCode.addClass('hidden');
+                    potHoles.addClass('hidden');
+                    treeDerbi.removeClass('hidden');
+                    trimTree.addClass('hidden');
+
+                    rodentBating.addClass('hidden');
+                    graffityRemoval.addClass('hidden');
+                    abandondedVehicles.addClass('hidden');
+                    abandondedBuilding.addClass('hidden');
+                    break;
+                case "4":
+                    restRequest.removeClass('hidden');
+                    cartsDelivered.addClass('hidden');
+                    sanitationCode.addClass('hidden');
+                    potHoles.addClass('hidden');
+                    treeDerbi.addClass('hidden');
+                    trimTree.removeClass('hidden');
+
+                    rodentBating.addClass('hidden');
+                    graffityRemoval.addClass('hidden');
+                    abandondedVehicles.addClass('hidden');
+                    abandondedBuilding.addClass('hidden');
+                    break;
+                case "5":
+                    restRequest.addClass('hidden');
+                    cartsDelivered.addClass('hidden');
+                    sanitationCode.addClass('hidden');
+                    potHoles.addClass('hidden');
+                    treeDerbi.addClass('hidden');
+                    trimTree.addClass('hidden');
+
+                    rodentBating.removeClass('hidden');
+                    graffityRemoval.addClass('hidden');
+                    abandondedVehicles.addClass('hidden');
+                    abandondedBuilding.addClass('hidden');
+                    break;
+                case "6":
+                    restRequest.addClass('hidden');
+                    cartsDelivered.addClass('hidden');
+                    sanitationCode.addClass('hidden');
+                    potHoles.addClass('hidden');
+                    treeDerbi.addClass('hidden');
+                    trimTree.addClass('hidden');
+
+                    rodentBating.addClass('hidden');
+                    graffityRemoval.removeClass('hidden');
+                    abandondedVehicles.addClass('hidden');
+                    abandondedBuilding.addClass('hidden');
+                    break;
+                case "7":
+                    restRequest.addClass('hidden');
+                    cartsDelivered.addClass('hidden');
+                    sanitationCode.addClass('hidden');
+                    potHoles.addClass('hidden');
+                    treeDerbi.addClass('hidden');
+                    trimTree.addClass('hidden');
+
+                    rodentBating.addClass('hidden');
+                    graffityRemoval.addClass('hidden');
+                    abandondedVehicles.removeClass('hidden');
+                    abandondedBuilding.addClass('hidden');
+                    break;
+                case "8":
+                    restRequest.addClass('hidden');
+                    cartsDelivered.addClass('hidden');
+                    sanitationCode.addClass('hidden');
+                    potHoles.addClass('hidden');
+                    treeDerbi.addClass('hidden');
+                    trimTree.addClass('hidden');
+
+                    rodentBating.addClass('hidden');
+                    graffityRemoval.addClass('hidden');
+                    abandondedVehicles.addClass('hidden');
+                    abandondedBuilding.removeClass('hidden');
+                    break;
+                default:
+                    restRequest.addClass('hidden');
+                    cartsDelivered.addClass('hidden');
+                    sanitationCode.addClass('hidden');
+                    potHoles.addClass('hidden');
+                    treeDerbi.addClass('hidden');
+                    trimTree.addClass('hidden');
+
+                    rodentBating.addClass('hidden');
+                    graffityRemoval.addClass('hidden');
+                    abandondedVehicles.addClass('hidden');
+                    abandondedBuilding.addClass('hidden');
             }
-            else if(selectedType.includes('Sanitation')){
-                restRequest.removeClass('hidden');
-                cartsDelivered.addClass('hidden');
-                sanitationCode.removeClass('hidden');
-                potHoles.addClass('hidden');
-                treeDerbi.addClass('hidden');
-                trimTree.addClass('hidden');
-
-                rodentBating.addClass('hidden');
-                graffityRemoval.addClass('hidden');
-                abandondedVehicles.addClass('hidden');
-                abandondedBuilding.addClass('hidden');
-            }
-            else if(selectedType.includes('Pot Hol') || selectedType.includes('Pothole')){
-                restRequest.removeClass('hidden');
-                cartsDelivered.addClass('hidden');
-                sanitationCode.addClass('hidden');
-                potHoles.removeClass('hidden');
-                treeDerbi.addClass('hidden');
-                trimTree.addClass('hidden');
-
-                rodentBating.addClass('hidden');
-                graffityRemoval.addClass('hidden');
-                abandondedVehicles.addClass('hidden');
-                abandondedBuilding.addClass('hidden');
-            }
-            else if(selectedType.includes('Tree Debris')){
-                restRequest.removeClass('hidden');
-                cartsDelivered.addClass('hidden');
-                sanitationCode.addClass('hidden');
-                potHoles.addClass('hidden');
-                treeDerbi.removeClass('hidden');
-                trimTree.addClass('hidden');
-
-                rodentBating.addClass('hidden');
-                graffityRemoval.addClass('hidden');
-                abandondedVehicles.addClass('hidden');
-                abandondedBuilding.addClass('hidden');
-            }
-            else if(selectedType.includes('Tree Trim')){
-                restRequest.removeClass('hidden');
-                cartsDelivered.addClass('hidden');
-                sanitationCode.addClass('hidden');
-                potHoles.addClass('hidden');
-                treeDerbi.addClass('hidden');
-                trimTree.removeClass('hidden');
-
-                rodentBating.addClass('hidden');
-                graffityRemoval.addClass('hidden');
-                abandondedVehicles.addClass('hidden');
-                abandondedBuilding.addClass('hidden');
-            }
-            else if(selectedType.includes('Rodent Baiting')){
-                restRequest.addClass('hidden');
-                cartsDelivered.addClass('hidden');
-                sanitationCode.addClass('hidden');
-                potHoles.addClass('hidden');
-                treeDerbi.addClass('hidden');
-                trimTree.addClass('hidden');
-
-                rodentBating.removeClass('hidden');
-                graffityRemoval.addClass('hidden');
-                abandondedVehicles.addClass('hidden');
-                abandondedBuilding.addClass('hidden');
-            }
-            else if(selectedType.includes('Graffiti Removal')){
-                restRequest.addClass('hidden');
-                cartsDelivered.addClass('hidden');
-                sanitationCode.addClass('hidden');
-                potHoles.addClass('hidden');
-                treeDerbi.addClass('hidden');
-                trimTree.addClass('hidden');
-
-                rodentBating.addClass('hidden');
-                graffityRemoval.removeClass('hidden');
-                abandondedVehicles.addClass('hidden');
-                abandondedBuilding.addClass('hidden');
-            }
-            else if(selectedType.includes('Abandoned Vehicle')){
-                restRequest.addClass('hidden');
-                cartsDelivered.addClass('hidden');
-                sanitationCode.addClass('hidden');
-                potHoles.addClass('hidden');
-                treeDerbi.addClass('hidden');
-                trimTree.addClass('hidden');
-
-                rodentBating.addClass('hidden');
-                graffityRemoval.addClass('hidden');
-                abandondedVehicles.removeClass('hidden');
-                abandondedBuilding.addClass('hidden');
-            }
-            else if(selectedType.includes('Abandoned Building')){
-                restRequest.addClass('hidden');
-                cartsDelivered.addClass('hidden');
-                sanitationCode.addClass('hidden');
-                potHoles.addClass('hidden');
-                treeDerbi.addClass('hidden');
-                trimTree.addClass('hidden');
-
-                rodentBating.addClass('hidden');
-                graffityRemoval.addClass('hidden');
-                abandondedVehicles.addClass('hidden');
-                abandondedBuilding.removeClass('hidden');
-            }
-            else {
-                restRequest.addClass('hidden');
-                cartsDelivered.addClass('hidden');
-                sanitationCode.addClass('hidden');
-                potHoles.addClass('hidden');
-                treeDerbi.addClass('hidden');
-                trimTree.addClass('hidden');
-
-                rodentBating.addClass('hidden');
-                graffityRemoval.addClass('hidden');
-                abandondedVehicles.addClass('hidden');
-                abandondedBuilding.addClass('hidden');
-            }
-
         });
 
 
         $('#address_search').click(function() {
 
-            var form = $('#service_request_form');
-            form.validate();
-            if(!form.valid())
-                alert("Hello")
+            //var form = $('#service_request_form');
+            //form.validate();
+            //if(!form.valid())
+             //   alert("Hello")
 
             var address = $('#address').val();
             var zipCode = $('#zip_code').val();

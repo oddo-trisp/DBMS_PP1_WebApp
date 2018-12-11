@@ -36,10 +36,12 @@ import java.util.Map;
 		@StoredProcedureParameter(mode = ParameterMode.IN, name = "address", type = String.class)
 })
 
-@NamedQuery(name="ServiceRequest.findRequestTypes", query="SELECT DISTINCT r.requestType FROM ServiceRequest r WHERE r.requestType IS NOT NULL")
+@NamedQuery(name="ServiceRequest.findRequestStatus", query="SELECT DISTINCT r.status FROM ServiceRequest r WHERE r.status IS NOT NULL")
+
+@NamedQuery(name="ServiceRequest.findRequestCurrentActivity", query="SELECT DISTINCT r.currentActivity FROM ServiceRequest r WHERE r.currentActivity IS NOT NULL")
 
 @NamedQuery(name="ServiceRequest.findByZipcode", query="SELECT r FROM ServiceRequest r " +
-		"WHERE r.location.zipCode =: zipCode")
+		"WHERE TYPE(r) = ServiceRequest AND r.location.zipCode =: zipCode")
 
 @NamedQuery(name="ServiceRequest.findByAddress", query="SELECT r FROM ServiceRequest r " +
 		"WHERE r.location.address =: address")

@@ -75,11 +75,20 @@ public class ServiceRequestDAO extends GenericDAO<ServiceRequest>{
                 .getResultList();
     }
 
-    public List findServiceRquestTypes(){
+    public List findServiceRquestStatus(){
         return entityManager
-                .createNamedQuery("ServiceRequest.findRequestTypes",String.class)
+                .createNamedQuery("ServiceRequest.findRequestStatus",String.class)
                 .getResultList();
     }
+
+    public List findServiceRequestCurrentActivity(){
+        return entityManager
+                .createNamedQuery("ServiceRequest.findRequestCurrentActivity",String.class)
+                .getResultList();
+    }
+
+
+
 
     public List<ServiceRequest> findByZipCode(String zipcode){
         return entityManager

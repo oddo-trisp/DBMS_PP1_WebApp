@@ -36,8 +36,12 @@ public class ServiceRequestServiceImpl {
         serviceRequestDAO.insert(serviceRequest);
     }
 
-    public List findServiceRequestTypes(){
-        return serviceRequestDAO.findServiceRquestTypes();
+    public List findServiceRequestStatus(){
+        return serviceRequestDAO.findServiceRquestStatus();
+    }
+
+    public List findServiceRequestCurrentActivity(){
+        return serviceRequestDAO.findServiceRequestCurrentActivity();
     }
 
     public List storedProcedure1(String sdate, String edate){
