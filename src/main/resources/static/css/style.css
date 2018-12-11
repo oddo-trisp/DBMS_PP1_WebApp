@@ -1,8 +1,14 @@
+html,body{
+    height: 100%;
+}
+
 body{
+    display: flex;
+    flex-direction: column;
     background: #ffffff;
 }
 
 .container{
-    margin-bottom: 2%;
+    flex: 1 0 auto;
 }
 
