@@ -63,6 +63,18 @@ public class ServiceRequestDAO extends GenericDAO<ServiceRequest>{
         return null;
     }
 
+    public List zipSearch(String zipcode){
+        return entityManager.createNamedStoredProcedureQuery("ServiceRequest.zip_search")
+                .setParameter("zipCode", zipcode)
+                .getResultList();
+    }
+
+    public List addressSearch(String address){
+        return entityManager.createNamedStoredProcedureQuery("ServiceRequest.address_search")
+                .setParameter("address", address)
+                .getResultList();
+    }
+
     public List findServiceRquestTypes(){
         return entityManager
                 .createNamedQuery("ServiceRequest.findRequestTypes",String.class)

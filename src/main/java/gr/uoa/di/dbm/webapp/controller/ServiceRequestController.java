@@ -81,16 +81,16 @@ public class ServiceRequestController {
                          @RequestParam(name="zipcode", required=false)String zipcode,
                          @RequestParam(name="address",required=false)String address,
                          RedirectAttributes ra){
-        List<ServiceRequest> results = stype.equals("zip") ? serviceRequestService.findByZipCode(zipcode)
-                : serviceRequestService.findByAddress(address);
+        List results = stype.equals("zip") ? serviceRequestService.searchByZip(zipcode)
+                : serviceRequestService.searchByAddress(address);
         ra.addFlashAttribute("resultsList", results);
         model.addAttribute(TITLE, "Search");
         return "redirect:/search";
     }
 
     @RequestMapping(value="/search", method = RequestMethod.GET)
-    public String searchPage(Model model, @ModelAttribute("resultsList") final ArrayList<ServiceRequest> resList){
-        List<ServiceRequest> L = new ArrayList<>();
+    public String searchPage(Model model, @ModelAttribute("resultsList") final ArrayList resList){
+        List L = new ArrayList();
         if(!resList.isEmpty())
             L = resList;
         model.addAttribute("rList", L);

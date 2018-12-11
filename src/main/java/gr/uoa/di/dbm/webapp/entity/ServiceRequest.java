@@ -28,6 +28,14 @@ import java.util.Map;
 		@StoredProcedureParameter(mode = ParameterMode.IN, name = "startDate", type = Timestamp.class)
 })
 
+@NamedStoredProcedureQuery(name = "ServiceRequest.zip_search", procedureName = "zip_search", parameters = {
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "zipCode", type = String.class)
+})
+
+@NamedStoredProcedureQuery(name = "ServiceRequest.address_search", procedureName = "address_search", parameters = {
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "address", type = String.class)
+})
+
 @NamedQuery(name="ServiceRequest.findRequestTypes", query="SELECT DISTINCT r.requestType FROM ServiceRequest r WHERE r.requestType IS NOT NULL")
 
 @NamedQuery(name="ServiceRequest.findByZipcode", query="SELECT r FROM ServiceRequest r " +
