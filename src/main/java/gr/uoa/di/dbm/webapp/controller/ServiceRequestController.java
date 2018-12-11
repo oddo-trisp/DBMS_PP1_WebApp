@@ -65,18 +65,14 @@ public class ServiceRequestController {
             serviceRequest = new GarbageCart();
             BeanUtils.copyProperties(previousRequest,serviceRequest);
         }
-
         //Location location = serviceRequestService.searchLocationById(new Double(37.983809), new Double(23.727530));
         //if(location == null)    location = new Location();
         Location location = new Location();
         location.setId(new LocationPK(new Double(37.983808), new Double(23.727530)));
         //TODO add rest location fields
-
         location = serviceRequestService.insertOrUpdateLocation(location);
-
         serviceRequest.setLocation(location);
         serviceRequestService.insertServiceRequest(serviceRequest);
-
         return "add";
     }
 
@@ -85,19 +81,19 @@ public class ServiceRequestController {
                          @RequestParam(name="zipcode", required=false)String zipcode,
                          @RequestParam(name="address",required=false)String address,
                          RedirectAttributes ra){
-
         List<ServiceRequest> results = stype.equals("zip") ? serviceRequestService.findByZipCode(zipcode)
                 : serviceRequestService.findByAddress(address);
-
-        ra.addFlashAttribute("resultsList", results); // edw pername to L, allakse to x me to L. tipota allo
+        ra.addFlashAttribute("resultsList", results);
         model.addAttribute(TITLE, "Search");
         return "redirect:/search";
     }
 
     @RequestMapping(value="/search", method = RequestMethod.GET)
-    public String searchPage(Model model, @ModelAttribute("resultsList") final String resList){
-        /* edw allakse sthn panw grammh to 'final String resList' me 'final List resList' kai mhn allakseis tipota allo apla svise to comment */
-        model.addAttribute("rList", resList);
+    public String searchPage(Model model, @ModelAttribute("resultsList") final ArrayList<ServiceRequest> resList){
+        List<ServiceRequest> L = new ArrayList<>();
+        if(!resList.isEmpty())
+            L = resList;
+        model.addAttribute("rList", L);
         model.addAttribute(TITLE, "Search");
         return SEARCH;
     }

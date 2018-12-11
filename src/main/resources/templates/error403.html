@@ -10,9 +10,12 @@
 <th:block th:include="/_menu"></th:block>
 
 <div class="container">
-    <h3 th:if="${message != null}" th:utext="${message}" style="color: red;"></h3>
+    <h3 th:if="${message != null}" th:utext="${message}" style="color: firebrick;"></h3>
     <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
 </div>
+
+<!-- include footer.html -->
+<th:block th:include="/_footer"></th:block>
 
 </body>
 

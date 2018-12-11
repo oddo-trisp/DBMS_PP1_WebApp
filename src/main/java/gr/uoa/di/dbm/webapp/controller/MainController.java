@@ -28,7 +28,6 @@ public class MainController {
     private static final String WELCOME = "welcome";
     private static final String APP_USER = "appUser";
 
-
     @Autowired
     public MainController(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -37,7 +36,6 @@ public class MainController {
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute(TITLE, "Home");
-        model.addAttribute("resultsList","");
         return WELCOME;
     }
 
