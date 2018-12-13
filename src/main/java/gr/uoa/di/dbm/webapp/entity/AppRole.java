@@ -23,9 +23,9 @@ public class AppRole implements Serializable {
 	@Column(name="role_name")
 	private String roleName;
 
-	//bi-directional many-to-one association to UserRole
-	@OneToMany(mappedBy="appRole", cascade=CascadeType.ALL)
-	private List<UserRole> userRoles = new ArrayList<>();
+	//bi-directional many-to-one association to AppUser
+	@ManyToMany(mappedBy="appRoles", fetch = FetchType.LAZY)
+	private List<AppUser> appUsers = new ArrayList<>();
 
 	public AppRole() {
 	}
@@ -46,24 +46,22 @@ public class AppRole implements Serializable {
 		this.roleName = roleName;
 	}
 
-	public List<UserRole> getUserRoles() {
-		return this.userRoles;
+	public List<AppUser> getAppUsers() {
+		return this.appUsers;
 	}
 
-	public void setUserRoles(List<UserRole> userRoles) {
-		this.userRoles = userRoles;
+	public void setAppUsers(List<AppUser> appUsers) {
+		this.appUsers = appUsers;
 	}
 
-	public UserRole addUserRole(UserRole userRole) {
-		getUserRoles().add(userRole);
-		userRole.setAppRole(this);
+	public AppUser addAppUser(AppUser userRole) {
+		getAppUsers().add(userRole);
 
 		return userRole;
 	}
 
-	public UserRole removeUserRole(UserRole userRole) {
-		getUserRoles().remove(userRole);
-		userRole.setAppRole(null);
+	public AppUser removeAppUser(AppUser userRole) {
+		getAppUsers().remove(userRole);
 
 		return userRole;
 	}

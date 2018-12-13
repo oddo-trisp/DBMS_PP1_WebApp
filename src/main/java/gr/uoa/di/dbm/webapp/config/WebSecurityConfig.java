@@ -1,9 +1,8 @@
 package gr.uoa.di.dbm.webapp.config;
 
-import javax.sql.DataSource;
-
 import gr.uoa.di.dbm.webapp.dao.GenericDAO;
 import gr.uoa.di.dbm.webapp.entity.AppRole;
+import gr.uoa.di.dbm.webapp.entity.AuditLog;
 import gr.uoa.di.dbm.webapp.entity.Location;
 import gr.uoa.di.dbm.webapp.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -46,6 +47,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return locationGenericDAO;
     }
 
+    @Bean
+    public GenericDAO<AuditLog> auditLogGenericDAO() {
+        GenericDAO<AuditLog> auditLogGenericDAO = new GenericDAO<>();
+        auditLogGenericDAO.setEntityClass(AuditLog.class);
+        return auditLogGenericDAO;
+    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -65,7 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //  pages require login as ROLE_USER or ROLE_ADMIN.
         // If no login, it will redirect to /login page.
-        http.authorizeRequests().antMatchers("/","/welcome","/insert","/search/**","/searchResults","/sp/**","/spResults").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/","/welcome","/insert","/searchSuggestions/**","/searchResults","/sp/**","/spResults").access("hasRole('ROLE_USER')");
 
         // For ADMIN only.
         http.authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')");

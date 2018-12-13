@@ -69,6 +69,11 @@ public class ServiceRequestServiceImpl {
         return result;
     }
 
+    public List search(String zip, String address, String type){
+        List result = serviceRequestDAO.search(zip,address,type);
+        return result;
+    }
+
     public List<ServiceRequest> findByZipCode(String zipCode){
         return serviceRequestDAO.findByZipCode(zipCode);
     }

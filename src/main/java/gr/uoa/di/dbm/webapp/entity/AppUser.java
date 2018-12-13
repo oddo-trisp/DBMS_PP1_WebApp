@@ -41,8 +41,16 @@ public class AppUser implements Serializable {
 	private String email;
 
 	//bi-directional many-to-one association to UserRole
-	@OneToMany(mappedBy="appUser", cascade=CascadeType.ALL)
-	private List<UserRole> userRoles = new ArrayList<>();
+	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "user_role",
+			joinColumns = { @JoinColumn(name = "user_id") },
+			inverseJoinColumns = { @JoinColumn(name = "role_id") }
+	)
+	private List<AppRole> appRoles = new ArrayList<>();
+
+	@OneToMany(mappedBy = "appUser")
+	private List<AuditLog> auditLogs = new ArrayList<>();
 
 	public AppUser() {
 	}
@@ -103,26 +111,31 @@ public class AppUser implements Serializable {
 		this.email = email;
 	}
 
-	public List<UserRole> getUserRoles() {
-		return this.userRoles;
+	public List<AppRole> getAppRoles() {
+		return this.appRoles;
 	}
 
-	public void setUserRoles(List<UserRole> userRoles) {
-		this.userRoles = userRoles;
+	public void setAppRoles(List<AppRole> userRoles) {
+		this.appRoles = appRoles;
 	}
 
-	public UserRole addUserRole(UserRole userRole) {
-		getUserRoles().add(userRole);
-		userRole.setAppUser(this);
+	public AppRole addAppRole(AppRole appRole) {
+		getAppRoles().add(appRole);
 
-		return userRole;
+		return appRole;
 	}
 
-	public UserRole removeUserRole(UserRole userRole) {
-		getUserRoles().remove(userRole);
-		userRole.setAppUser(null);
+	public AppRole removeAppRole(AppRole appRole) {
+		getAppRoles().remove(appRole);
 
-		return userRole;
+		return appRole;
 	}
 
+	public List<AuditLog> getAuditLogs() {
+		return auditLogs;
+	}
+
+	public void setAuditLogs(List<AuditLog> auditLogs) {
+		this.auditLogs = auditLogs;
+	}
 }

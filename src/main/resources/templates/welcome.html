@@ -12,71 +12,49 @@
 <th:block th:include="/_menu"></th:block>
 
 <div class="container">
-
     <div class="row">
-        <div class="col-md-4">
-            <h4 class="proc_name">Stored Procedure 1</h4>
-            <p class="description">
-                Find the total requests per type that were created within a specified time range and sort them in a descending order.
-            </p>
-            <form th:action="@{/spResults/1}" th:method="POST" >
-                <div class="form-group">
-                    <label>Start Date:</label>
-                    <input type="date" name="sdate">
+        <h2>Welcome to <b>311 chicago Incidents</b></h2>
+        <p>Here you can search for specific Incidents or you can insert new incidents</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>Search</h3>
+                    <p>Existing Incidents</p>
                 </div>
-                <div class="form-group">
-                    <label>End Date:</label>
-                    <input type="date" name="edate">
+                <div class="icon">
+                    <i class="fa fa-search"></i>
                 </div>
-                <div class="button_div">
-                    <button type="submit" id="submitButton"> Test SP1 </button>
-                </div>
-            </form>
+                <a th:href="@{/search}" class="small-box-footer">
+                    Proceed <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h4 class="proc_name">Stored Procedure 2</h4>
-            <p class="description">
-                Find the total requests per day for a specific request type and time range.
-            </p>
-            <form th:action="@{/spResults/2}" th:method="POST" >
-                <div class="form-group">
-                    <label>Start Date:</label>
-                    <input type="date" name="sdate">
+        <div class="col-lg-6 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner">
+                    <h3>Insert</h3>
+
+                    <p>New Incidents</p>
                 </div>
-                <div class="form-group">
-                    <label>End Date:</label>
-                    <input type="date" name="edate">
+                <div class="icon">
+                    <i class="fa fa-plus"></i>
                 </div>
-                <div class="form-group">
-                    <label>Request Type:</label>
-                    <input type="text" name="reqtype">
-                </div>
-                <div class="button_div">
-                    <button type="submit" id="submitButton2"> Test SP2 </button>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-4">
-            <h4 class="proc_name">Stored Procedure 3</h4>
-            <p class="description">
-                Find the most common service request per zipcode for a specific day.
-            </p>
-            <form th:action="@{/spResults/3}" th:method="POST" >
-                <div class="form-group">
-                    <label>Start Date:</label>
-                    <input type="date" name="sdate">
-                </div>
-                <div class="button_div">
-                    <button type="submit" id="submitButton3"> Test SP3 </button>
-                </div>
-            </form>
+                <a th:href="@{/insert}" class="small-box-footer">
+                    Proceed <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
         </div>
     </div>
-
 </div>
 
 <!-- include footer.html -->
 <th:block th:include="/_footer"></th:block>
+<script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
 
 </body>
 

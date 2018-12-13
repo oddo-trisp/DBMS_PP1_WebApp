@@ -5,7 +5,6 @@ import gr.uoa.di.dbm.webapp.dao.IGenericDAO;
 import gr.uoa.di.dbm.webapp.entity.AppRole;
 import gr.uoa.di.dbm.webapp.entity.AppUser;
 import gr.uoa.di.dbm.webapp.entity.Role;
-import gr.uoa.di.dbm.webapp.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
@@ -48,20 +47,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         System.out.println("Found User: " + appUser);
 
-        // [ROLE_USER, ROLE_ADMIN,..]  .........OLD
-        //List<String> roleNames = appRoleDAO.getRoleNames(appUser.getUserId());
-        //List<GrantedAuthority> grantList = new ArrayList<>();
-        //if (roleNames != null)
-        //    roleNames.stream().map(SimpleGrantedAuthority::new).forEach(grantList::add);
-            /*for (String role : roleNames) {
-                // ROLE_USER, ROLE_ADMIN,..
-                GrantedAuthority authority = new SimpleGrantedAuthority(role);
-                grantList.add(authority);
-            }*/
         List<GrantedAuthority> grantList = new ArrayList<>();
-        appUser.getUserRoles()
+        appUser.getAppRoles()
                 .stream()
-                .map(UserRole::getAppRole)
                 .map(AppRole::getRoleName)
                 .collect(Collectors.toList())
                 .stream()
@@ -76,19 +64,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public AppUser registerUser(AppUser appUser){
-    //public AppUser registerUser(Map<String,String> credentials){
         try {
-            UserRole userRole = new UserRole();
-
             appUser.setEncrytedPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
             appUser.setEnabled(1);
-            appUser.addUserRole(userRole);
 
             AppRole appRole = appRoleDAO.findById(Role.ROLE_USER.getValue());
-            appRole.addUserRole(userRole);
+            appUser.addAppRole(appRole);
 
             appUserDAO.insert(appUser);
-            appRoleDAO.insertOrUpdate(appRole);
 
             return appUser;
         }

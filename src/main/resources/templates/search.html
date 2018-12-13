@@ -15,33 +15,122 @@
 
 <div class="container">
     <div class="row">
-        <div id="search-by-zip" class="col-md-6">
-            <h4>ZIP CODE search:</h4>
-            <p class="description">Search the database for incidents in a <i>specific Zip Code.</i></p>
-            <form th:action="@{/search/zip}" th:method="POST" >
-                <input type="text" name="zipcode" placeholder="Zip Code">
+        <div class="row nav-tabs-custom">
+            <h4>Service Request Search:</h4>
+            <p class="description">Search the database for incidents</i></p>
+            <form th:action="@{/search}" th:method="POST" >
+                <div class="form-group">
+                    <input type="text" name="zipcode" placeholder="Zip Code">
+                </div>
+                <div>
+                    <input type="text" name="address" placeholder="Address">
+                </div>
+                <div class="form-group">
+                    <label>Request Type:</label>
+                    <select name="reqtype">
+                        <option value="">Select Request Type</option>
+                        <option th:each="reqType : ${serviceRequestTypes}"
+                                th:value="${reqType.value}"
+                                th:text="${reqType.value}">
+                        </option>
+                    </select>
+                </div>
                 <div class="button_div">
                     <button type="submit"> Search </button>
                 </div>
             </form>
         </div>
-        <div id="search-by-address" class="col-md-6">
-            <h4>ADDRESS search:</h4>
-            <p class="description">Search the database for incidents in a <i>specific Address.</i></p>
-            <form th:action="@{/search/address}" th:method="POST" >
-                <input type="text" name="address" placeholder="Address">
-                <div class="button_div">
-                    <button type="submit"> Search </button>
+        <div class="row">
+            <!-- Custom Tabs -->
+            <div class="nav-tabs-custom">
+            <h4>Search Suggestions:</h4>
+            <p class="description">Common incident searches</i></p>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">Suggestion 1</a></li>
+                <li><a href="#tab_2" data-toggle="tab">Suggestion 2</a></li>
+                <li><a href="#tab_3" data-toggle="tab">Suggestion 3</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                    <h4 class="proc_name">Search Suggestion 1</h4>
+                    <p class="description">
+                        Find the total requests per type that were created within a specified time range and sort them in a descending order.
+                    </p>
+                    <form th:action="@{/spResults/1}" th:method="POST" >
+                        <div class="form-group">
+                            <label>Start Date:</label>
+                            <input type="date" name="sdate">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date:</label>
+                            <input type="date" name="edate">
+                        </div>
+                        <div class="button_div">
+                            <button type="submit" id="submitButton"> Search </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_2">
+                    <h4 class="proc_name">Search Suggestion 2</h4>
+                    <p class="description">
+                        Find the total requests per day for a specific request type and time range.
+                    </p>
+                    <form th:action="@{/spResults/2}" th:method="POST" >
+                        <div class="form-group">
+                            <label>Start Date:</label>
+                            <input type="date" name="sdate">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date:</label>
+                            <input type="date" name="edate">
+                        </div>
+                        <div class="form-group">
+                            <label>Request Type:</label>
+                            <select name="reqtype">
+                                <option value="">Select Request Type</option>
+                                <option th:each="reqType : ${serviceRequestTypes}"
+                                        th:value="${reqType.value}"
+                                        th:text="${reqType.value}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="button_div">
+                            <button type="submit" id="submitButton2"> Search </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.tab-pane -->
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_3">
+                    <h4 class="proc_name">Search Suggestion 3</h4>
+                    <p class="description">
+                        Find the most common service request per zipcode for a specific day.
+                    </p>
+                    <form th:action="@{/spResults/3}" th:method="POST" >
+                        <div class="form-group">
+                            <label>Start Date:</label>
+                            <input type="date" name="sdate">
+                        </div>
+                        <div class="button_div">
+                            <button type="submit" id="submitButton3"> Search </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
         </div>
+        </div>
+        <!-- nav-tabs-custom -->
     </div>
 </div>
-
-<!-- include footer.html -->
 <th:block th:include="/_footer"></th:block>
 
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+
 <script>
     $(document).ready( function () {
         $('#res-table').DataTable({

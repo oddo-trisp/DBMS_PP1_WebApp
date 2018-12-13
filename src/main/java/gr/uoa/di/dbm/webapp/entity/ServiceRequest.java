@@ -32,6 +32,12 @@ import java.util.Map;
 		@StoredProcedureParameter(mode = ParameterMode.IN, name = "zipCode", type = String.class)
 })
 
+@NamedStoredProcedureQuery(name = "ServiceRequest.search", procedureName = "search", parameters = {
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "zip", type = String.class),
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "address", type = String.class),
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "type", type = String.class)
+})
+
 @NamedStoredProcedureQuery(name = "ServiceRequest.address_search", procedureName = "address_search", parameters = {
 		@StoredProcedureParameter(mode = ParameterMode.IN, name = "address", type = String.class)
 })

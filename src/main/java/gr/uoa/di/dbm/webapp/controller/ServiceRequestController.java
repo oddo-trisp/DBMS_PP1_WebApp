@@ -185,13 +185,20 @@ public class ServiceRequestController {
         return "searchResults";
     }
 
-    @RequestMapping(value="/search/{stype}", method = RequestMethod.POST)
-    public String search(Model model, @PathVariable String stype,
-                         @RequestParam(name="zipcode", required=false)String zipcode,
-                         @RequestParam(name="address",required=false)String address,
-                         RedirectAttributes ra){
-        List results = stype.equals("zip") ? serviceRequestService.searchByZip(zipcode)
-                : serviceRequestService.searchByAddress(address);
+    @RequestMapping(value="/search", method = RequestMethod.POST)
+    public String search(Model model, HttpServletRequest request, RedirectAttributes ra){
+
+        Map<String, String> parameters = request.getParameterMap()
+                .entrySet().stream()
+                .filter(e -> Arrays.asList("zipcode","address","reqtype").contains(e.getKey()))
+                .filter(e -> !ArrayUtils.isEmpty(e.getValue()))
+                .filter(e -> !StringUtils.isEmpty(e.getValue()[0]))
+                .collect(Collectors.toMap(Map.Entry::getKey, e->e.getValue()[0]));
+
+
+        List results = serviceRequestService.search(parameters.getOrDefault("zipcode",null),
+                parameters.getOrDefault("address",null),
+                parameters.getOrDefault("reqtype",null));
         List L = results.subList(0,250);
         ra.addFlashAttribute("resultsList", L);
         model.addAttribute(TITLE, "Search");

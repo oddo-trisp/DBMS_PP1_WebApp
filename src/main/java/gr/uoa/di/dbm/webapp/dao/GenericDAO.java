@@ -58,5 +58,9 @@ public class GenericDAO<T extends Serializable> implements IGenericDAO<T> {
         T entity = findById(entityId);
         delete(entity);
     }
+
+    public EntityManager getEntityManager(){
+        return entityManager;
+    }
 }
 
