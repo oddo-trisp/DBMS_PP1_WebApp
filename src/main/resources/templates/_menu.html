@@ -1,15 +1,39 @@
+<head>
+    <style>
+        .navbar{
+            min-height: 80px;
+            background:transparent;
+            border-bottom: 2px solid rgba(100,79,122,0.2);
+        }
+        .navbar-header .navbar-brand,
+        .navbar-nav .navbar-brand{
+            padding: 0 30px;
+            height: 80px;
+            line-height: 80px;
+            font-size: 22px;
+        }
+        .navbar-nav > li > a:hover{
+            color: #d3d5d6;
+        }
+        @media (min-width: 768px){
+            .navbar-nav > li > a {
+                padding-top: 26px;
+                padding-bottom: 26px;
+                line-height: 27px;
+            }
+        }
+    </style>
+</head>
+
 <div xmlns:th="http://www.thymeleaf.org">
 
-    <nav class="navbar navbar-light bg-light" style="background-color: #efefef;">
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-left">
-                <li>
-                    <a class="navbar-brand" th:href="@{/}">
-                        <img src="../static/images/chicago_logo.png" th:src="@{/images/chicago_logo.png}"
-                        style = "width: 100px; height:100%; "/>
-                    </a>
-                </li>
-                <li><a class="navbar-brand" th:href="@{/}">Home</a></li>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a style="font-family:'Monoton', cursive;" class="navbar-brand" th:href="@{/}">311CI
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
                 <li><a class="navbar-brand" th:href="@{/insert}">Insert</a></li>
                 <li><a class="navbar-brand" th:href="@{/search}">Search</a></li>
             </ul>

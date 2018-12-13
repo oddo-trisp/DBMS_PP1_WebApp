@@ -17,7 +17,6 @@
     <div class="row">
         <!--SP 1-->
         <div class="sptbl" th:if="${fnum == 1}">
-            <h3>Stored Procedure 1 results:</h3>
             <table id="sp1tbl" class="table table-striped">
                 <thead>
                 <tr>
@@ -35,7 +34,6 @@
         </div>
         <!-- SP 2 -->
         <div class="sptbl" th:if="${fnum == 2}">
-            <h3>Stored Procedure 2 results:</h3>
             <table id="sp2tbl" class="table table-striped">
                 <thead>
                 <tr>
@@ -53,7 +51,6 @@
         </div>
         <!-- SP 3 -->
         <div class="sptbl" th:if="${fnum == 3}">
-            <h3>Stored Procedure 3 results:</h3>
             <table id="sp3tbl" class="table table-striped">
                 <thead>
                     <tr>
@@ -79,13 +76,19 @@
 <script>
     $(document).ready( function () {
         $('#sp1tbl').DataTable({
-            "bFilter" : false
+            "bFilter" : false,
+            "bLengthChange": false,
+            "iDisplayLength": 10
         });
         $('#sp2tbl').DataTable({
-            "bFilter" : false
+            "bFilter" : false,
+            "bLengthChange": false,
+            "iDisplayLength": 10
         });
         $('#sp3tbl').DataTable({
-            "bFilter" : false
+            "bFilter" : false,
+            "bLengthChange": false,
+            "iDisplayLength": 10
         });
     } );
 </script>

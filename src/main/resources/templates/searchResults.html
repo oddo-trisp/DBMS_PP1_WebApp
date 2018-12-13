@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="/header"></th:block>
+    <link href="../static/css/searchResults.css" th:href="@{/css/searchResults.css}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+    <title th:utext="${title}"></title>
+</head>
+
+<body>
+
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<div class="container">
+    <div class="row">
+        <div class="results">
+            <table id="res-table" class="table table-striped">
+                <thead>
+                <tr>
+                    <th> SERVICE REQUEST ID </th>
+                    <th> SERVICE REQUEST NUMBER </th>
+                    <th> SERVICE REQUEST TYPE </th>
+                    <th> CREATION DATE </th>
+                    <th> COMPLETION DATE </th>
+                    <th> STATUS </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="rl : ${rList}">
+                    <td th:value="${rl[0]}" th:text="${rl[0]}"> </td>
+                    <td th:value="${rl[1]}" th:text="${rl[1]}"> </td>
+                    <td th:value="${rl[2]}" th:text="${rl[2]}"> </td>
+                    <td th:value="${rl[3]}" th:text="${rl[3]}"> </td>
+                    <td th:value="${rl[4]}" th:text="${rl[4]}"> </td>
+                    <td th:value="${rl[5]}" th:text="${rl[5]}"> </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- include footer.html -->
+<th:block th:include="/_footer"></th:block>
+
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#res-table').DataTable({
+            "bFilter" : false,
+            "bLengthChange": false,
+            "iDisplayLength": 10
+        });
+    } );
+</script>
+
+</body>
+
+</html>

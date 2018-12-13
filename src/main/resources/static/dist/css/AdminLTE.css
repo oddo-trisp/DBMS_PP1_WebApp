@@ -3240,18 +3240,36 @@ table.text-center th {
   margin-bottom: 25px;
   font-weight: 300;
 }
-.login-logo a,
-.register-logo a {
-  color: #444;
+.login-logo img,
+.register-logo img{
+  background-color: rgba(255,255,255,0.6);
+  border-radius: 25px;
+  padding: 5px 10px 8px 10px;
 }
+.login-logo h1,
+.register-logo h1 {
+  color: #fff;
+}
+.login-box-body a,
+.register-box-body a{
+  color: #117700;
+  text-decoration: underline;
+}
+
 .login-page,
 .register-page {
-  background: #e8e8e8;
+  background-image: url(../../images/background.jpg);
+  height: 100%;
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
+
 .login-box,
 .register-box {
   width: 360px;
-  margin: 7% auto;
+  margin: 5% auto;
 }
 @media (max-width: 768px) {
   .login-box,
@@ -3262,14 +3280,15 @@ table.text-center th {
 }
 .login-box-body,
 .register-box-body {
-  background: #fff;
+  background:rgba(255,255,255, 0.5);
   padding: 20px;
   border-top: 0;
-  color: #555;
+  color: #111;
+  border-radius: 25px;
 }
 .login-box-body .form-control-feedback,
 .register-box-body .form-control-feedback {
-  color: #666;
+  color: #555;
 }
 .login-box-msg,
 .register-box-msg {

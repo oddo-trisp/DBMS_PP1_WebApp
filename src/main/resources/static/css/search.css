@@ -4,7 +4,7 @@
 }
 
 h4{
-    color: #336699;
+    color: #644f7a;
 }
 
 input{
@@ -13,9 +13,18 @@ input{
     outline: 0;
     background: transparent;
     padding: 5px;
-    border-bottom: 2px solid rgba(53, 158, 134, .5);
+    border-bottom: 2px solid rgba(100,79,122,0.5);
 }
 
 button{
+    background-color: #644f7a;
+    border: none;
+    padding: 5px 15px;
+    color: #fff;
+    border-radius: 5px;
     margin-top: 20px;
+}
+
+button:hover{
+    background-color: #5a476d;
 }

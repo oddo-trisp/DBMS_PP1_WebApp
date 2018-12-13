@@ -7,10 +7,10 @@
 
     <div class="register-box">
         <div class="register-logo">
-            <img src="../static/images/chicago_logo.png" th:src="@{/images/chicago_logo.png}"
-                 style = "width: 180px; height: 65px; margin-bottom: 0.75em;">
-            <br/>
-            <a th:href="@{/welcome}"><b>DBMS PP1</b> Webapp</a>
+            <div style="display:inline-block">
+                <h1 style="display:inline; font-family: 'Monoton', cursive;">311CI</h1>
+                <h1 style="display:inline;">webapp</h1>
+            </div>
         </div>
 
         <div class="register-box-body">
@@ -68,8 +68,9 @@
                     <!-- /.col -->
                 </div>
             </form>
-
-            <a th:href="@{/login}" class="text-center">I already have a membership. Sign In.</a>
+            <p style="margin-top:20px;">
+                <a th:href="@{/login}" class="text-center">I already have a membership. Sign In.</a>
+            </p>
         </div>
         <!-- /.form-box -->
     </div>

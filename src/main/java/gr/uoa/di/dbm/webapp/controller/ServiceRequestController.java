@@ -50,7 +50,7 @@ public class ServiceRequestController {
         model.addAttribute(SERVICE_REQ_CUR_ACTS, serviceRequestCurrentActivities);
         model.addAttribute(SERVICE_REQ_STATUSES, serviceRequestStatuses);
         model.addAttribute(SERVICE_REQ_TYPES, serviceRequestTypes);
-
+        model.addAttribute(TITLE, "insert");
         return INSERT;
     }
 
@@ -175,6 +175,16 @@ public class ServiceRequestController {
         return "add";
     }
 
+    @RequestMapping(value="/searchResults", method = RequestMethod.GET)
+    public String searchResults(Model model, @ModelAttribute("resultsList") final ArrayList resList){
+        List L = new ArrayList();
+        if(!resList.isEmpty())
+            L = resList;
+        model.addAttribute("rList", L);
+        model.addAttribute(TITLE, "Search Results");
+        return "searchResults";
+    }
+
     @RequestMapping(value="/search/{stype}", method = RequestMethod.POST)
     public String search(Model model, @PathVariable String stype,
                          @RequestParam(name="zipcode", required=false)String zipcode,
@@ -182,9 +192,10 @@ public class ServiceRequestController {
                          RedirectAttributes ra){
         List results = stype.equals("zip") ? serviceRequestService.searchByZip(zipcode)
                 : serviceRequestService.searchByAddress(address);
-        ra.addFlashAttribute("resultsList", results);
+        List L = results.subList(0,250);
+        ra.addFlashAttribute("resultsList", L);
         model.addAttribute(TITLE, "Search");
-        return "redirect:/search";
+        return "redirect:/searchResults";
     }
 
     @RequestMapping(value="/search", method = RequestMethod.GET)
