@@ -175,6 +175,16 @@ public class ServiceRequestController {
         return "add";
     }
 
+    /*private String getNextReqNo(){
+        String lastReqNo = serviceRequestService.findLastReqNo();
+        String[] parts = lastReqNo.split("(?=-)");
+        long prefix = Long.getLong(parts[0]);
+        long suffix = Long.getLong(parts[1]);
+        long limit = 99999999L;
+        prefix = suffix == limit ? prefix++ : prefix;
+        suffix = suffix == limit ? 0L : suffix++;
+    }*/
+
     @RequestMapping(value="/searchResults", method = RequestMethod.GET)
     public String searchResults(Model model, @ModelAttribute("resultsList") final ArrayList resList){
         List L = new ArrayList();
@@ -210,7 +220,9 @@ public class ServiceRequestController {
         List L = new ArrayList();
         if(!resList.isEmpty())
             L = resList;
+        List serviceRequestTypes = Arrays.asList(ServiceRequestType.class.getEnumConstants());
         model.addAttribute("rList", L);
+        model.addAttribute(SERVICE_REQ_TYPES, serviceRequestTypes);
         model.addAttribute(TITLE, "Search");
         return SEARCH;
     }

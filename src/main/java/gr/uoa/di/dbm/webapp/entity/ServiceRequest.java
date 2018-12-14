@@ -1,9 +1,8 @@
 package gr.uoa.di.dbm.webapp.entity;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Map;
 
 /**
  * The persistent class for the service_request database table.
@@ -51,6 +50,9 @@ import java.util.Map;
 
 @NamedQuery(name="ServiceRequest.findByAddress", query="SELECT r FROM ServiceRequest r " +
 		"WHERE r.location.address =: address")
+
+@NamedQuery(name="ServiceRequest.findLatestReqNo", query="SELECT r.serviceRequestNo FROM ServiceRequest r " +
+        "WHERE r.serviceRequestNo is not null and r.serviceRequestNo like '%-%' order by r.serviceRequestNo ")
 
 public class ServiceRequest implements Serializable {
 	private static final long serialVersionUID = 1L;

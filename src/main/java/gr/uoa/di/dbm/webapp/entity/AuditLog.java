@@ -10,6 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="audit_log")
+@NamedQuery(name="AuditLog.findByUsername", query="SELECT a FROM AuditLog a WHERE a.appUser.userName =: userName")
 public class AuditLog implements Serializable {
     private static final long serialVersionUID = 1L;
 

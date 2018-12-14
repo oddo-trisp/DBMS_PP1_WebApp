@@ -1,9 +1,11 @@
 package gr.uoa.di.dbm.webapp.config;
 
 import gr.uoa.di.dbm.webapp.dao.AppUserDAO;
+import gr.uoa.di.dbm.webapp.dao.AuditLogDAO;
 import gr.uoa.di.dbm.webapp.dao.GenericDAO;
 import gr.uoa.di.dbm.webapp.entity.AppUser;
 import gr.uoa.di.dbm.webapp.entity.AuditLog;
+import gr.uoa.di.dbm.webapp.entity.AuditMessage;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -17,50 +19,55 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.util.Arrays;
+
+import static java.lang.System.arraycopy;
+
 @Aspect
 @Configuration
 public class AuditAspect {
 
-    //@PersistenceContext
-    //private EntityManager entityManager;
-
     final AppUserDAO appUserDAO;
 
-    final GenericDAO<AuditLog> auditLogDAO;
+    final AuditLogDAO auditLogDAO;
 
     @Autowired
-    public AuditAspect(AppUserDAO appUserDAO, @Qualifier("auditLogGenericDAO") GenericDAO<AuditLog> auditLogDAO) {
+    public AuditAspect(AppUserDAO appUserDAO, AuditLogDAO auditLogDAO) {
         this.appUserDAO = appUserDAO;
         this.auditLogDAO = auditLogDAO;
     }
 
-
-    //@Around("execution(* javax.persistence.EntityManager.createNamedStoredProcedureQuery(..))")
-    //@Before("execution(* gr.uoa.di.dbm.webapp.service.*.*(..))")
-    public Object aroundFind(JoinPoint joinPoint) {
+    @Before("execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.*(..)) " +
+            "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.insertOrUpdateLocation(..))" +
+            "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.findServiceRequestStatus(..))" +
+            "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.findServiceRequestCurrentActivity(..))" +
+            "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.findLastReqNo(..))"+
+            "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.findLogAll(..))"+
+            "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.findLogByUsername(..))"
+    )
+    public void beforeDAOExec(JoinPoint joinPoint) {
         System.err.println("before em find called : " + joinPoint);
-        Object o = null;
+        String name = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        String argument = "";
+        for(Object arg : args)
+            if(arg != null)
+                argument = argument + arg.toString() + ", ";
+
+        String message = AuditMessage.getValueByKey(name);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
-        AppUser appUser = appUserDAO.findByUsername("Odysseas");
+
+        System.out.println("User: "+userName+" "+message+argument);
+        String auditMessage = "User: "+userName+" "+ message + argument;
+
+        AppUser appUser = appUserDAO.findByUsername(userName);
         if(appUser != null) {
             AuditLog auditLog = new AuditLog();
             auditLog.setUserId(appUser);
-            auditLog.setActionMessage("MESSaaaage!!!");
+            auditLog.setActionMessage(auditMessage);
             auditLogDAO.insert(auditLog);
         }
-        /*try {
-
-            o = joinPoint.proceed();
-
-            System.err.println("after em find advice called : " + joinPoint);
-
-        } catch (Throwable e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-
-        }*/
-        return o;
 
     }
 

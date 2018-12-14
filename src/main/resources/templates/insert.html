@@ -18,35 +18,59 @@
 
             <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 <div class="form-group">
-                    <select class="form-control" id="reqtype_menu" name="request_type">
-                        <option value="">Select Request Type</option>
+                    <select class="form-control" id="reqtype_menu" name="request_type" th:required="required">
+                        <option value="">Select Request Type </option>
                         <option th:each="reqType : ${serviceRequestTypes}"
                                 th:value="${reqType.key}"
-                                th:text="${reqType.value}">
+                                th:text="${reqType.value}"
+                                >
                         </option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <select class="form-control" th:field="*{status}" name="req_status">
+                    <select class="form-control" th:field="*{status}" name="req_status" th:required="required">
                         <option value="">Select Request Status</option>
                         <option th:each="reqStatus : ${serviceRequestStatuses}"
                                 th:value="${reqStatus}"
-                                th:text="${reqStatus}">
+                                th:text="${reqStatus}"
+                                >
                         </option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <select class="form-control" th:field="*{currentActivity}" name="current_act">
+                    <select class="form-control" th:field="*{currentActivity}" name="current_act" th:required="required">
                         <option value="">Select Current Activity</option>
                         <option th:each="currentAct : ${serviceRequestCurrentActivities}"
                                 th:value="${currentAct}"
-                                th:text="${currentAct}">
+                                th:text="${currentAct}"
+                                >
                         </option>
                     </select>
                 </div>
                 <div class="form-group">
                     <div class="form-group">
                         <input type="text" name="most_rec_action" th:field="*{mostRecentAction}" class="form-control" placeholder="Most Recent Action">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4" id="location">
+                <div class="input-group form-group">
+                    <input type="text" id="address" name="address" th:required="required" th:field="*{location.address}" placeholder="Address (e.g. 221B BAKER STREET)" class="form-control">
+                    <span class="input-group-btn">
+                      <button type="button" id="address_search" class="btn btn-info btn-flat">Go!</button>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="zip_code" th:required="required" th:field="*{location.zipCode}" id="zip_code" class="form-control" placeholder="ZIP Code (e.g. 60626)">
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <input type="number" step="any" name="lat" th:field="*{location.id.latitude}" id="lat" class="form-control hidden">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" step="any" name="long" th:field="*{location.id.longitude}" id="long" class="form-control hidden">
                     </div>
                 </div>
 
@@ -160,38 +184,18 @@
                         <input type="text" name="tree_location" class="form-control" placeholder="Tree Location">
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4" id="location">
-                <div class="input-group form-group">
-                    <input type="text" id="address" name="address" th:required="required" th:field="*{location.address}" placeholder="Address (e.g. 221B BAKER STREET)" class="form-control">
-                    <span class="input-group-btn">
-                      <button type="button" id="address_search" class="btn btn-info btn-flat">Go!</button>
-                    </span>
-                </div>
-                <div class="form-group">
-                    <input type="text" name="zip_code" th:required="required" th:field="*{location.zipCode}" id="zip_code" class="form-control" placeholder="ZIP Code (e.g. 60626)">
-                </div>
-
-                <div class="form-group">
-                    <div class="form-group">
-                        <input type="number" step="any" name="lat" th:field="*{location.id.latitude}" id="lat" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <input type="number" step="any" name="long" th:field="*{location.id.longitude}" id="long" class="form-control">
-                    </div>
-                </div>
             </div>
 
             <div class="form-group col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 <div class="form-group">
-                    <input type="number" name="community_area" th:field="*{location.communityArea}" class="form-control" placeholder="Community Area (e.g. 1)">
+                    <input type="number" name="community_area" th:required="required" th:field="*{location.communityArea}" class="form-control" placeholder="Community Area (e.g. 1)">
                 </div>
                 <div class="form-group">
-                    <input type="number" name="police_district" th:field="*{location.policeDistrict}" class="form-control" placeholder="Police District (e.g. 24)">
+                    <input type="number" name="police_district" th:required="required" th:field="*{location.policeDistrict}" class="form-control" placeholder="Police District (e.g. 24)">
                 </div>
                 <div class="form-group">
-                    <input type="number" name="ward" th:field="*{location.ward}" class="form-control" placeholder="Ward (e.g. 49)">
+                    <input type="number" name="ward" th:required="required" th:field="*{location.ward}" class="form-control" placeholder="Ward (e.g. 49)">
                 </div>
                 <div class="form-group">
                     <input type="number" name="ssa" th:field="*{location.ssa}" class="form-control" placeholder="SSA (e.g. 50)">
@@ -203,6 +207,7 @@
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 button-div">
                 <input name="submit" type="submit" value="Insert" class="sub-button"/>
             </div>
+            <p>Fields with * are required</p>
 
         </form>
 
@@ -377,11 +382,16 @@
 <script>
     $('#address_search').click(function() {
 
-        /* SHOW THE MAP */
-        $("#map").removeClass("hidden");
-
         var address = $('#address').val();
         var zipCode = $('#zip_code').val();
+
+        if(address === "" || zipCode === "" ){
+            alert("Add address and zip code");
+            return false;
+        }
+
+        /* SHOW THE MAP */
+        $("#map").removeClass("hidden");
 
         // API token goes here
         var key = '0dc2b284f52976';
@@ -438,6 +448,18 @@
             var marker = L.marker([lat, lon]).addTo(map);
         });
     });
+</script>
+
+<script>
+    $('#service_request_form').submit(function() {
+       var lon = $('#long').val();
+       var lat = $('#lat').val();
+        if(lat === "" || lon === "" ){
+            alert("You must search for location");
+            return false;
+        }
+    });
+
 </script>
 
 <script>

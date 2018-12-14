@@ -1,7 +1,9 @@
 package gr.uoa.di.dbm.webapp.service;
 
+import gr.uoa.di.dbm.webapp.dao.AuditLogDAO;
 import gr.uoa.di.dbm.webapp.dao.GenericDAO;
 import gr.uoa.di.dbm.webapp.dao.ServiceRequestDAO;
+import gr.uoa.di.dbm.webapp.entity.AuditLog;
 import gr.uoa.di.dbm.webapp.entity.Location;
 import gr.uoa.di.dbm.webapp.entity.LocationPK;
 import gr.uoa.di.dbm.webapp.entity.ServiceRequest;
@@ -15,17 +17,14 @@ import java.util.List;
 public class ServiceRequestServiceImpl {
 
     private final GenericDAO<Location> locationDAO;
+    private final AuditLogDAO auditLogDAO;
     private final ServiceRequestDAO serviceRequestDAO;
 
     @Autowired
-    public ServiceRequestServiceImpl(@Qualifier("locationGenericDAO") GenericDAO<Location> locationDAO, ServiceRequestDAO serviceRequestDAO) {
+    public ServiceRequestServiceImpl(@Qualifier("locationGenericDAO") GenericDAO<Location> locationDAO, AuditLogDAO auditLogDAO, ServiceRequestDAO serviceRequestDAO) {
         this.locationDAO = locationDAO;
+        this.auditLogDAO = auditLogDAO;
         this.serviceRequestDAO = serviceRequestDAO;
-    }
-
-    public Location searchLocationById(Double lat, Double lon){
-        LocationPK locationPK = new LocationPK(lat, lon);
-        return locationDAO.findById(locationPK);
     }
 
     public Location insertOrUpdateLocation(Location location){
@@ -74,13 +73,17 @@ public class ServiceRequestServiceImpl {
         return result;
     }
 
-    public List<ServiceRequest> findByZipCode(String zipCode){
-        return serviceRequestDAO.findByZipCode(zipCode);
+    public String findLastReqNo(){
+        return serviceRequestDAO.findLastReqNo();
     }
 
-    public List<ServiceRequest> findByAddress(String address){
-        return serviceRequestDAO.findByAddress(address);
+
+    public List<AuditLog> findLogByUsername(String username) {
+        return auditLogDAO.findByUsername(username);
     }
 
+    public List<AuditLog> findLogAll() {
+        return auditLogDAO.findAll();
+    }
 
 }

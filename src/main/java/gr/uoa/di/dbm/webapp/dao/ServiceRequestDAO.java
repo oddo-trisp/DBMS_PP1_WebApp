@@ -96,19 +96,8 @@ public class ServiceRequestDAO extends GenericDAO<ServiceRequest>{
     }
 
 
-
-
-    public List<ServiceRequest> findByZipCode(String zipcode){
-        return entityManager
-                .createNamedQuery("ServiceRequest.findByZipcode", ServiceRequest.class)
-                .setParameter("zipCode",zipcode)
-                .getResultList();
-    }
-
-    public List<ServiceRequest> findByAddress(String address){
-        return entityManager
-                .createNamedQuery("ServiceRequest.findByAddress", ServiceRequest.class)
-                .setParameter("address",address)
-                .getResultList();
+    public String findLastReqNo(){
+        return entityManager.createNamedQuery("ServiceRequest.findLatestReqNo", String.class)
+                .getSingleResult();
     }
 }
