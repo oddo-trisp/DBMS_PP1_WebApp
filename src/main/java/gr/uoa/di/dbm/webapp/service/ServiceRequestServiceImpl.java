@@ -31,8 +31,9 @@ public class ServiceRequestServiceImpl {
         return locationDAO.insertOrUpdate(location);
     }
 
-    public void insertServiceRequest(ServiceRequest serviceRequest){
+    public Integer insertServiceRequest(ServiceRequest serviceRequest){
         serviceRequestDAO.insert(serviceRequest);
+        return serviceRequest.getServiceRequestId();
     }
 
     public List findServiceRequestStatus(){

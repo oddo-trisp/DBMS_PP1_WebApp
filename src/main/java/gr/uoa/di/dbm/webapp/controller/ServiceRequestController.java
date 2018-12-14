@@ -172,7 +172,7 @@ public class ServiceRequestController {
         serviceRequest.setLocation(location);
         serviceRequest.setRequestType(ServiceRequestType.getValueByKey(requestType));
         serviceRequestService.insertServiceRequest(serviceRequest);
-        return "add";
+        return "addRequest";
     }
 
     /*private String getNextReqNo(){

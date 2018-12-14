@@ -26,6 +26,9 @@ public class AuditLog implements Serializable {
     @JoinColumn(name="user_id", referencedColumnName="user_id")
     private AppUser appUser;
 
+    @Column(name="request_id")
+    private Integer requestId;
+
     public AuditLog() {
     }
 
@@ -35,6 +38,22 @@ public class AuditLog implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
+    }
+
+    public Integer getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(Integer requestId) {
+        this.requestId = requestId;
     }
 
     public String getActionMessage() {
