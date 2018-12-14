@@ -1,6 +1,8 @@
 package gr.uoa.di.dbm.webapp.controller;
 
 import gr.uoa.di.dbm.webapp.entity.AppUser;
+import gr.uoa.di.dbm.webapp.entity.AuditLog;
+import gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl;
 import gr.uoa.di.dbm.webapp.service.UserDetailsServiceImpl;
 import gr.uoa.di.dbm.webapp.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final ServiceRequestServiceImpl serviceRequestService;
     private static final String ADMIN = "admin";
     private static final String ERROR403 = "error403";
     private static final String LOGIN = "login";
@@ -28,9 +33,11 @@ public class MainController {
     private static final String WELCOME = "welcome";
     private static final String APP_USER = "appUser";
 
+
     @Autowired
-    public MainController(UserDetailsServiceImpl userDetailsService) {
+    public MainController(UserDetailsServiceImpl userDetailsService, ServiceRequestServiceImpl serviceRequestService) {
         this.userDetailsService = userDetailsService;
+        this.serviceRequestService = serviceRequestService;
     }
 
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
@@ -40,10 +47,22 @@ public class MainController {
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String adminPage(Model model, Principal principal) {
+    public String adminPage(Model model) {
+        List<AuditLog> L = new ArrayList<AuditLog>();
+        L = serviceRequestService.findLogAll();
+        model.addAttribute("allLogsList",L);
+        model.addAttribute(TITLE, "Admin Page");
+        return ADMIN;
+    }
+
+    @RequestMapping(value = "/userAudit", method = RequestMethod.GET)
+    public String userPage(Model model, Principal principal) {
         User loggedinUser = (User) ((Authentication) principal).getPrincipal();
-        String userInfo = WebUtils.toString(loggedinUser);
-        model.addAttribute(USER_INFO, userInfo);
+        String username = loggedinUser.getUsername();
+        List<AuditLog> L = new ArrayList<AuditLog>();
+        L = serviceRequestService.findLogByUsername(username);
+        model.addAttribute("logsList",L);
+        model.addAttribute(TITLE, "User Page");
         return ADMIN;
     }
 

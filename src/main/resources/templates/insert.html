@@ -22,8 +22,7 @@
                         <option value="">Select Request Type </option>
                         <option th:each="reqType : ${serviceRequestTypes}"
                                 th:value="${reqType.key}"
-                                th:text="${reqType.value}"
-                                >
+                                th:text="${reqType.value}">
                         </option>
                     </select>
                 </div>
@@ -207,8 +206,6 @@
             <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 button-div">
                 <input name="submit" type="submit" value="Insert" class="sub-button"/>
             </div>
-            <p>Fields with * are required</p>
-
         </form>
 
     </div>

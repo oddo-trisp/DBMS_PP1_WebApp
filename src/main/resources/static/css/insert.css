@@ -38,3 +38,7 @@ form{
 .sub-button:hover{
     background-color: #5a476d;
 }
+
+.reqfield, .required-field{
+    display: inline-block;
+}

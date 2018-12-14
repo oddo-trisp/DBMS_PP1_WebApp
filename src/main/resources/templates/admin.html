@@ -2,6 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="/header"></th:block>
+    <link href="../static/css/admin.css" th:href="@{/css/admin.css}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
     <title th:utext="${title}"></title>
 </head>
 <body>
@@ -10,20 +13,52 @@
 <th:block th:include="/_menu"></th:block>
 
 <div class="container">
+    <div class="row intro">
+        <h2>Admin Page</h2>
+        <h3>Welcome :
+            <span th:utext="${#request.userPrincipal.name}"></span>
+        </h3>
+    </div>
+    <div class="row logs">
+        <table id="log-table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th> TRANSACTION </th>
+                    <th> USER </th>
+                    <th> ACTION </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="l : ${allLogsList}">
+                    <td th:value="${l.getId()}" th:text="${l.getId()}"> </td>
+                    <td th:value="${l.getAppUser().getUserName()}" th:text="${l.getAppUser().getUserName()}"> </td>
+                    <td th:value="${l.getActionMessage()}" th:text="${l.getActionMessage()}"> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <h2>Admin Page</h2>
-    <h3>Welcome :
-        <span th:utext="${#request.userPrincipal.name}"></span>
-    </h3>
-    <b>This is protected page!</b>
-
-    <br/><br/>
-
-    <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
 </div>
 
 <!-- include footer.html -->
 <th:block th:include="/_footer"></th:block>
+
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#log-table').DataTable({
+            "bFilter" : false,
+            "bLengthChange": false,
+            "iDisplayLength": 10,
+            "columns": [
+                { "width": "10%" },
+                { "width": "20%" },
+                { "width": "70%" }
+            ]
+        });
+    } );
+</script>
+
 
 </body>
 

@@ -1,0 +1,21 @@
+.intro {
+    margin-bottom: 2em;
+    text-align: center;
+}
+
+.intro span{
+    color: #5a476d;
+}
+
+.logs{
+    width: 70%;
+    margin: auto;
+}
+
+td, th{
+    text-align: center;
+}
+
+th{
+    color: #644f7a;
+}

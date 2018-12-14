@@ -41,3 +41,8 @@ button:hover{
 .reqtype{
     margin-top: 1em;
 }
+
+.required{
+    margin-top: 20px;
+    color: #644f7a;
+}

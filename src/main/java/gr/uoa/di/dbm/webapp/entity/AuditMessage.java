@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@NamedQuery(name="AuditMessage.findByUser", query="SELECT a FROM AuditMessage a WHERE a. =: userName")
+@NamedQuery(name="AuditMessage.findByUser", query="SELECT a FROM AuditMessage a WHERE a.appUser.username =: userName")
 
 public enum AuditMessage {
     INSERT("insertServiceRequest", "Insert new incident"),
