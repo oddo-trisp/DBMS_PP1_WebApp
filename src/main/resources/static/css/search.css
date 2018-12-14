@@ -3,8 +3,9 @@
     text-align: center;
 }
 
-h4{
+h3{
     color: #644f7a;
+    margin-bottom: 1em;
 }
 
 input{
@@ -27,4 +28,16 @@ button{
 
 button:hover{
     background-color: #5a476d;
+}
+
+.nav-tabs-custom{
+    background-color: transparent;
+}
+
+.tab-pane{
+    padding: 1em;
+}
+
+.reqtype{
+    margin-top: 1em;
 }
