@@ -52,7 +52,7 @@ import java.sql.Timestamp;
 		"WHERE r.location.address =: address")
 
 @NamedQuery(name="ServiceRequest.findLatestReqNo", query="SELECT r.serviceRequestNo FROM ServiceRequest r " +
-        "WHERE r.serviceRequestNo is not null and r.serviceRequestNo like '%-%' order by r.serviceRequestNo ")
+        "WHERE r.serviceRequestNo is not null and r.serviceRequestNo like '%-%' order by r.serviceRequestNo DESC")
 
 public class ServiceRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class ServiceRequest implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="service_request_id")
-	private Integer serviceRequestId;
+	private Long serviceRequestId;
 
 	@Column(name="completion_date")
 	private Timestamp completionDate;
@@ -94,11 +94,11 @@ public class ServiceRequest implements Serializable {
 	public ServiceRequest() {
 	}
 
-	public Integer getServiceRequestId() {
+	public Long getServiceRequestId() {
 		return this.serviceRequestId;
 	}
 
-	public void setServiceRequestId(Integer serviceRequestId) {
+	public void setServiceRequestId(Long serviceRequestId) {
 		this.serviceRequestId = serviceRequestId;
 	}
 

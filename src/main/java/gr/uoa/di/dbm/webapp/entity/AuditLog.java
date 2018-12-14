@@ -1,6 +1,7 @@
 package gr.uoa.di.dbm.webapp.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import javax.persistence.*;
 
 
@@ -17,7 +18,7 @@ public class AuditLog implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
-    private Integer id;
+    private Long id;
 
     @Column(name="action_message")
     private String actionMessage;
@@ -27,16 +28,19 @@ public class AuditLog implements Serializable {
     private AppUser appUser;
 
     @Column(name="request_id")
-    private Integer requestId;
+    private Long requestId;
+
+    @Column(name="create_date")
+    private Timestamp createDate;
 
     public AuditLog() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -48,12 +52,20 @@ public class AuditLog implements Serializable {
         this.appUser = appUser;
     }
 
-    public Integer getRequestId() {
+    public Long getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(Integer requestId) {
+    public void setRequestId(Long requestId) {
         this.requestId = requestId;
+    }
+
+    public Timestamp getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
     }
 
     public String getActionMessage() {

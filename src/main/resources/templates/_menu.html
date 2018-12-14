@@ -35,11 +35,11 @@
             <ul class="nav navbar-nav">
                 <li><a class="navbar-brand" th:if="${#request.isUserInRole('ROLE_USER')}" th:href="@{/search}">Search Request</a></li>
                 <li><a class="navbar-brand" th:if="${#request.isUserInRole('ROLE_USER')}" th:href="@{/insert}">Insert Request</a></li>
-
+                <li><a class="navbar-brand" th:if="${#request.isUserInRole('ROLE_USER')}" th:href="@{/userAudit}">My Actions</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a class="navbar-brand" th:if="${#request.isUserInRole('ROLE_ADMIN')}" th:href="@{/admin}">Admin</a></li>
-                <li><a class="navbar-brand" th:href="@{/userAudit}" th:text="${#request.userPrincipal.name}"></a></li>
+                <li><a class="navbar-brand" href="#" th:text="'Welcome '+${#request.userPrincipal.name}+'!'"></a></li>
                 <li><a class="navbar-brand" th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a></li>
             </ul>
         </div>

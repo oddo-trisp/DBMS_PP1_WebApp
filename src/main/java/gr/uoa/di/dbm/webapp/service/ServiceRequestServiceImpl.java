@@ -31,9 +31,13 @@ public class ServiceRequestServiceImpl {
         return locationDAO.insertOrUpdate(location);
     }
 
-    public Integer insertServiceRequest(ServiceRequest serviceRequest){
+    public ServiceRequest insertServiceRequest(ServiceRequest serviceRequest){
         serviceRequestDAO.insert(serviceRequest);
-        return serviceRequest.getServiceRequestId();
+        return serviceRequest;
+    }
+
+    public ServiceRequest updateServiceRequest(ServiceRequest serviceRequest){
+        return serviceRequestDAO.insertOrUpdate(serviceRequest);
     }
 
     public List findServiceRequestStatus(){
@@ -85,6 +89,10 @@ public class ServiceRequestServiceImpl {
 
     public List<AuditLog> findLogAll() {
         return auditLogDAO.findAll();
+    }
+
+    public ServiceRequest findServiceRequestById(Long id){
+        return serviceRequestDAO.findById(id);
     }
 
 }

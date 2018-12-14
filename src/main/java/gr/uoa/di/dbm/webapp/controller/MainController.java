@@ -59,11 +59,11 @@ public class MainController {
     public String userPage(Model model, Principal principal) {
         User loggedinUser = (User) ((Authentication) principal).getPrincipal();
         String username = loggedinUser.getUsername();
-        List<AuditLog> L = new ArrayList<AuditLog>();
+        List<AuditLog> L;
         L = serviceRequestService.findLogByUsername(username);
         model.addAttribute("logsList",L);
         model.addAttribute(TITLE, "User Page");
-        return ADMIN;
+        return "userAudit";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

@@ -26,6 +26,7 @@
                     <th> TRANSACTION </th>
                     <th> USER </th>
                     <th> ACTION </th>
+                    <th> CREATION DATE </th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +34,7 @@
                     <td th:value="${l.getId()}" th:text="${l.getId()}"> </td>
                     <td th:value="${l.getAppUser().getUserName()}" th:text="${l.getAppUser().getUserName()}"> </td>
                     <td th:value="${l.getActionMessage()}" th:text="${l.getActionMessage()}"> </td>
+                    <td th:value="${l.getCreateDate()}" th:text="${l.getCreateDate()}"> </td>
                 </tr>
             </tbody>
         </table>

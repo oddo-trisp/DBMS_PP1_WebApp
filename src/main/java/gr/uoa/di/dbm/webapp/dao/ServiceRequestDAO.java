@@ -98,6 +98,7 @@ public class ServiceRequestDAO extends GenericDAO<ServiceRequest>{
 
     public String findLastReqNo(){
         return entityManager.createNamedQuery("ServiceRequest.findLatestReqNo", String.class)
+                .setMaxResults(1)
                 .getSingleResult();
     }
 }

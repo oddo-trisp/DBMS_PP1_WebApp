@@ -13,6 +13,7 @@ import org.thymeleaf.util.ArrayUtils;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +30,9 @@ public class ServiceRequestController {
     private static final String INSERT = "insert";
     private static final String SEARCH = "search";
     private static final String SP_RESULTS = "spResults";
+    private static final String IS_INSERT = "isInsert";
     private static final String TITLE = "title";
+    private static final String SUCCESSFUL_INSERT = "successfullInsert";
 
 
     private final ServiceRequestServiceImpl serviceRequestService;
@@ -40,13 +43,18 @@ public class ServiceRequestController {
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.GET)
-    public String insertPage(Model model) {
-        ServiceRequest serviceRequest = new ServiceRequest();
+    public String insertPage(Model model, @ModelAttribute(SERVICE_REQ) ServiceRequest serviceRequest, @ModelAttribute(SUCCESSFUL_INSERT) String successfulInsert) {
         List serviceRequestStatuses = serviceRequestService.findServiceRequestStatus();
         List serviceRequestCurrentActivities = serviceRequestService.findServiceRequestCurrentActivity();
         List serviceRequestTypes = Arrays.asList(ServiceRequestType.class.getEnumConstants());
 
-        model.addAttribute(SERVICE_REQ, serviceRequest);
+        if(serviceRequest.getServiceRequestId() == null) {
+            model.addAttribute(SERVICE_REQ, serviceRequest);
+            model.addAttribute(IS_INSERT, Boolean.TRUE);
+        }
+        else
+            model.addAttribute(IS_INSERT, Boolean.FALSE);
+        model.addAttribute(SUCCESSFUL_INSERT,successfulInsert);
         model.addAttribute(SERVICE_REQ_CUR_ACTS, serviceRequestCurrentActivities);
         model.addAttribute(SERVICE_REQ_STATUSES, serviceRequestStatuses);
         model.addAttribute(SERVICE_REQ_TYPES, serviceRequestTypes);
@@ -54,9 +62,10 @@ public class ServiceRequestController {
         return INSERT;
     }
 
-    @RequestMapping(value = "/insert/addRequest", method = RequestMethod.POST)
+    @RequestMapping(value = "/insert/{isInsert}", method = RequestMethod.POST)
     public String addRequest(@ModelAttribute ServiceRequest serviceRequest,
-                             BindingResult errors, Model model, HttpServletRequest request){
+                             @PathVariable Boolean isInsert,
+                             BindingResult errors, Model model, RedirectAttributes ra, HttpServletRequest request){
 
         Map<String, String> restParameters = request.getParameterMap()
                 .entrySet().stream()
@@ -170,20 +179,36 @@ public class ServiceRequestController {
 
         Location location = serviceRequestService.insertOrUpdateLocation(serviceRequest.getLocation());
         serviceRequest.setLocation(location);
+        serviceRequest.setCreateDate(new Timestamp(System.currentTimeMillis()));
         serviceRequest.setRequestType(ServiceRequestType.getValueByKey(requestType));
-        serviceRequestService.insertServiceRequest(serviceRequest);
-        return "addRequest";
+        if(isInsert){
+            serviceRequest.setServiceRequestNo(getNextReqNo());
+            serviceRequestService.insertServiceRequest(serviceRequest);
+            ra.addFlashAttribute(SUCCESSFUL_INSERT, "Incident was successfully inserted!");
+        }
+        else {
+            serviceRequestService.updateServiceRequest(serviceRequest);
+            ra.addFlashAttribute(SUCCESSFUL_INSERT, "Incident was successfully updated!");
+        }
+
+        ra.addFlashAttribute(SERVICE_REQ, serviceRequest);
+        return "redirect:/insert";
     }
 
-    /*private String getNextReqNo(){
+    private String getNextReqNo(){
         String lastReqNo = serviceRequestService.findLastReqNo();
         String[] parts = lastReqNo.split("(?=-)");
-        long prefix = Long.getLong(parts[0]);
-        long suffix = Long.getLong(parts[1]);
+        long prefix = Long.parseLong(parts[0]);
+        long suffix = Long.parseLong(parts[1].substring(1));
         long limit = 99999999L;
         prefix = suffix == limit ? prefix++ : prefix;
         suffix = suffix == limit ? 0L : suffix++;
-    }*/
+
+        String newPrefix = Long.toString(prefix);
+        String tempSuffix = Long.toString(suffix);
+        String newSuffix = "00000000" + tempSuffix;
+        return newPrefix + "-" + newSuffix.substring(tempSuffix.length());
+    }
 
     @RequestMapping(value="/searchResults", method = RequestMethod.GET)
     public String searchResults(Model model, @ModelAttribute("resultsList") final ArrayList resList){
@@ -259,4 +284,11 @@ public class ServiceRequestController {
         return SP_RESULTS;
     }
 
+
+    @RequestMapping(value={"/edit/{requestId}"}, method = RequestMethod.GET)
+    public String testProc(Model model, RedirectAttributes ra, @PathVariable Long requestId) {
+        ServiceRequest serviceRequest = serviceRequestService.findServiceRequestById(requestId);
+        ra.addFlashAttribute(SERVICE_REQ, serviceRequest);
+        return "redirect:/insert";
+    }
 }

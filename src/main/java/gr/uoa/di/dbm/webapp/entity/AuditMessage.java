@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public enum AuditMessage {
     INSERT("insertServiceRequest", "Insert new incident"),
+    UPDATE("updateServiceRequest", "Update existing incident"),
     SEARCH_SUGG1("storedProcedure1", "Search incident using suggestion 1 with parameters "),
     SEARCH_SUGG2("storedProcedure2", "Search incident using suggestion 2 with parameters "),
     SEARCH_SUGG3("storedProcedure3", "Search incident using suggestion 3 with parameter "),

@@ -5,6 +5,7 @@ import gr.uoa.di.dbm.webapp.dao.AuditLogDAO;
 import gr.uoa.di.dbm.webapp.entity.AppUser;
 import gr.uoa.di.dbm.webapp.entity.AuditLog;
 import gr.uoa.di.dbm.webapp.entity.AuditMessage;
+import gr.uoa.di.dbm.webapp.entity.ServiceRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.sql.Timestamp;
 
 @Aspect
 @Configuration
@@ -35,25 +38,31 @@ public class AuditAspect {
             "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.findLastReqNo(..))"+
             "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.findLogAll(..))"+
             "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.findLogByUsername(..))"+
-            "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.insertServiceRequest(..))"
+            "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.insertServiceRequest(..))"+
+            "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.findServiceRequestById(..))"+
+            "&& !execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.updateServiceRequest(..))"
     )
     public void beforeDAOExec(JoinPoint joinPoint) {
-        writeToLog(joinPoint, null);
+        writeToLog(joinPoint, null, null);
     }
 
-    @AfterReturning(pointcut = "execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.insertServiceRequest(..))", returning = "result")
-    public void afterInsert(JoinPoint joinPoint, Integer result){
-        writeToLog(joinPoint, result);
+    @AfterReturning(pointcut = "execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.insertServiceRequest(..))" +
+            "|| execution(* gr.uoa.di.dbm.webapp.service.ServiceRequestServiceImpl.updateServiceRequest(..))", returning = "result"
+    )
+    public void afterInsert(JoinPoint joinPoint, ServiceRequest result){
+        writeToLog(joinPoint, result.getServiceRequestId(), result.getCreateDate());
     }
 
-    private void writeToLog(JoinPoint joinPoint, Integer returnValue){
+    private void writeToLog(JoinPoint joinPoint, Long requestId, Timestamp creationDate){
         System.err.println("before em find called : " + joinPoint);
         String name = joinPoint.getSignature().getName();
-        Object[] args = joinPoint.getArgs();
         String argument = "";
-        for(Object arg : args)
-            if(arg != null)
-                argument = argument + arg.toString() + ", ";
+        if(requestId == null) {      //Search query
+            Object[] args = joinPoint.getArgs();
+            for (Object arg : args)
+                if (arg != null)
+                    argument = argument + arg.toString() + ", ";
+        }
 
         String message = AuditMessage.getValueByKey(name);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -67,7 +76,10 @@ public class AuditAspect {
             AuditLog auditLog = new AuditLog();
             auditLog.setUserId(appUser);
             auditLog.setActionMessage(auditMessage);
-            auditLog.setRequestId(returnValue);
+            auditLog.setRequestId(requestId);
+            auditLog.setCreateDate(creationDate != null
+                    ? creationDate
+                    : new Timestamp(System.currentTimeMillis()));
             auditLogDAO.insert(auditLog);
         }
     }

@@ -25,12 +25,16 @@
             <tr>
                 <th> TRANSACTION </th>
                 <th> ACTION </th>
+                <th> CREATION DATE </th>
+                <th> EDIT </th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="l : ${logsList}">
                 <td th:value="${l.getId()}" th:text="${l.getId()}"> </td>
                 <td th:value="${l.getActionMessage()}" th:text="${l.getActionMessage()}"> </td>
+                <td th:value="${l.getCreateDate()}" th:text="${l.getCreateDate()}"> </td>
+                <td> <a th:if="${l.getRequestId() != null}" th:href="@{/edit/__${l.getRequestId()}__}" class="button btn-sm bg-purple"><i class="fa fa-edit"></i></a> </td>
             </tr>
             </tbody>
         </table>
